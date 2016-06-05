@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Yxscalc : Simple tool calculate data.">
+    <script src="3rd/lodash.min.js"></script>
+    <script src="3rd/jquery-1.11.2.min.js"></script>
+    <script src="3rd/fetch.js"></script>
+    <script src="3rd/github.bundle.min.js"></script>
+    <script src="3rd/jszip.min.js"></script>
+    <script src="3rd/lokijs.min.js"></script>
+    <script src="3rd/FileSaver.min.js"></script>
+
+    <link rel="stylesheet" href="3rd/bootstrap-3.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="3rd/bootstrap-3.3.2-dist/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="3rd/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+    <title>glass mgr</title>
+    <style type="text/css" media="screen">
+        .scrollmargin {
+            height: 10px;
+            text-align: center;
+        }
+
+        .ace_editor {
+            margin: 0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 700px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- HEADER -->
+<div id="header_wrap" class="row">
+    <header>
+        <div class="row">
+            <div class="col-xs-0"></div>
+            <div class="col-xs-5">
+                <button id="bt_run" type="button" class="btn btn-lg btn-danger">运行</button>
+            </div>
+            <div class="col-xs-2 col-xs-offset-3 btn btn-info btn-sm">
+                <a href="https://github.com/yxsicd/yxscalc">View on GitHub</a>
+            </div>
+        </div>
+    </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-6" style="height:100%">
+                    <div class="row">
+                        <span class="col-xs-12 label label-primary">脚本
+                        </span>
+                        <pre id="editor1">
+                        </pre>
+                    </div>
+
+                </div>
+                <div class="col-xs-6" id="pp">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="row">
+    <footer class="inner">
+        <div class="row">
+            <div class="col-xs-3 col-xs-offset-10">
+                <p class="copyright">Yxscalc maintained by <a href="https://github.com/yxsicd">yxsicd</a></p>
+
+                <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+            </div>
+        </div>
+
+    </footer>
+</div>
+
+<script src="3rd/ace/src-min-noconflict/ace.js"></script>
+<script>
+    var defaultline = 25;
+
+    var editor = ace.edit("editor1");
+    editor.setTheme("ace/theme/tomorrow_night_eighties");
+    editor.session.setMode("ace/mode/javascript");
+    editor.setOption("minLines", defaultline);
+    editor.setOption("maxLines", defaultline);
+
+</script>
+
+<script type="text/html" id="runscript">
+    /**
+    * Created by yxs on 2016/6/5.
+    */
+    // 9339a34b4046030d5fcd06d8b051d50fccb03666
+    // token auth
+
+    //PUT /repos/:owner/:repo/contents/:path
+    /**
+    * Created by yxs on 2016/6/5.
+    */
+    // 9339a34b4046030d5fcd06d8b051d50fccb03666
+    // token auth
+
+    var gh = new GitHub({
+    token: "9339a34b4046030d5fcd06d8b051d50fccb03666"
+    });
+    var tt = gh.getRepo("yxsicd", "yxslearn");
+
+    function testfile(i, count) {
+    console.log(i)
+    if (i > count) {
+    return;
+    }
+    tt.writeFile("master", "yxs/tt2.md", "###tt glass : " + i, "commit: " + i, {
+    "encode": true
+    },
+    function () {
+    window.setTimeout(function () {
+    testfile(i + 1, count);
+    }, 100)
+
+    }
+    )
+    }
+
+
+    function writeData(path, data) {
+
+    var ts = new Date().valueOf() + "";
+    tt.writeFile("master", path, data, ts, {
+    "encode": true
+    })
+    }
+
+    function readData(path) {
+    var ts = new Date().valueOf() + "";
+    tt.getContents("master", path, true).then(function (d) {
+    //console.log(d.data);
+    var goodzip = new JSZip();
+    goodzip.loadAsync(d.data, {"base64": true}).then(
+    function (myzip) {
+
+    myzip.file("base64").async("string").then(function (d) {
+    new JSZip().loadAsync(d, {"base64": true}).then(
+    function (nzip) {
+    nzip.file("db.json").async("string").then(function (d) {
+    var db = new loki();
+    db.loadJSON(d);
+    console.log(db);
+    });
+    }
+    )
+
+
+    });
+
+
+    }
+    );
+    })
+    }
+
+
+    var zip = new JSZip();
+    var db = new loki("db.json");
+    var c_p = db.addCollection("people");
+    for (var i = 0; i < 100; i++) {
+    c_p.insert({"name": "name" + i, "age": i})
+    }
+    var dbstr = db.serialize();
+    zip.file("db.json", dbstr);
+    zip.generateAsync({type: "base64", compression: "DEFLATE", compressionOptions: {level: 9}})
+    .then(function (content) {
+
+    var zip2 = new JSZip();
+    zip2.file("base64", content);
+    zip2.generateAsync({type: "base64", compression: "DEFLATE", compressionOptions: {level: 9}})
+    .then(function (content2) {
+    writeData("zip/db2.zip", content2);
+    });
+    writeData("zip/db1.zip", content);
+    });
+
+    zip.generateAsync({type: "blob", compression: "DEFLATE", compressionOptions: {level: 9}})
+    .then(function (content) {
+    saveAs(content, "hello.zip");
+    });
+
+
+    readData("zip/db2.zip");
+
+</script>
+
+<script>
+
+    editor.setValue(runscript.innerText)
+    $("#bt_run").click(function () {
+        eval(editor.getValue());
+    });
+    eval(editor.getValue());
+
+
+</script>
+
+
+</body>
+</html>
