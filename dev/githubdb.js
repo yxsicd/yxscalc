@@ -1,15 +1,6 @@
 /**
  * Created by yxs on 2016/6/5.
  */
-// 96312cf60f3e4fa5b0d326a17f40f0c1fe4962ae 
-// token auth
-
-//PUT /repos/:owner/:repo/contents/:path
-/**
- * Created by yxs on 2016/6/5.
- */
-// 96312cf60f3e4fa5b0d326a17f40f0c1fe4962ae 
-// token auth
 
 var gh = new GitHub({username:"yxsdb",password:""});
 var nowreop = gh.getRepo("yxsdb", "data");
@@ -21,7 +12,8 @@ function writeData(reop, path, data) {
 
 function readData(reop, path, callback) {
     var ts = new Date().valueOf() + "";
-    reop.getContents("master", path, true).then(callback)
+    $.get("https://raw.githubusercontent.com/"+ nowreop.__fullname+"/master/"+encodeURI(path)+"?_="+ts).then(callback)
+    //reop.getContents("master", path, true).then(callback)
 }
 
 function zipString(str, callback) {
@@ -69,8 +61,8 @@ zipString(dbstr, function (d) {
     writeData(nowreop, "db/db.zip", d)
 })
 readData(nowreop, "db/db.zip", function (d) {
-    console.log("data:", d);
-    unzipString(d.data, function (c) {
+    //console.log("data:", d);
+    unzipString(d, function (c) {
         //console.log("json:", c);
         var db = new loki();
         db.loadJSON(c);
