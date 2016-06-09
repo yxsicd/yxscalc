@@ -115,8 +115,8 @@
     // 96312cf60f3e4fa5b0d326a17f40f0c1fe4962ae
     // token auth
 
-    var gh = new GitHub({token: "96312cf60f3e4fa5b0d326a17f40f0c1fe4962ae"});
-    var nowreop = gh.getRepo("yxsicd", "yxslearn");
+    var gh = new GitHub({username:"yxsdb",password:""});
+    var nowreop = gh.getRepo("yxsdb", "data");
 
     function writeData(reop, path, data) {
     var ts = new Date().valueOf() + "";
