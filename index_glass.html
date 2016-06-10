@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,6 +19,8 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="3rd/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
     <script src="3rd/list.min.js"></script>
+    <script src="3rd/mustache.min.js"></script>
+
 
     <title>glass mgr</title>
     <style type="text/css" media="screen">
@@ -45,10 +48,6 @@
         <div class="row">
             <div class="col-xs-0"></div>
             <div class="col-xs-5">
-                <button id="bt_run" type="button" class="btn btn-lg btn-danger">运行</button>
-            </div>
-            <div class="col-xs-2 col-xs-offset-3 btn btn-info btn-sm">
-                <a href="https://github.com/yxsicd/yxscalc">View on GitHub</a>
             </div>
         </div>
     </header>
@@ -61,27 +60,22 @@
             <div class="row">
                 <div class="col-xs-6" style="height:100%">
                     <div class="row">
-                        <span class="col-xs-12 label label-primary">脚本
+                            <span id="bt_run1" class="col-xs-12 label label-primary">脚本
                         </span>
-                        <pre id="editor1">
+                            <pre id="editor1">
                         </pre>
                     </div>
                 </div>
                 <div class="col-xs-6" id="pp">
-                    <div id="hacker-list">
-                        <table class="list">
-                            <tr>
-                                <td class="name"></td>
-                                <td class="city"></td>
-                            </tr>
-                        </table>
+                    <div class="row">
+                            <span id="bt_run2" class="col-xs-12 label label-primary">脚本2
+                        </span>
+                            <pre id="editor2">
+                        </pre>
                     </div>
-
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>
 
@@ -90,7 +84,8 @@
     <footer class="inner">
         <div class="row">
             <div class="col-xs-3 col-xs-offset-10">
-                <p class="copyright">Yxscalc maintained by <a href="https://github.com/yxsicd">yxsicd</a></p>
+                <p class="copyright"><a href="https://github.com/yxsicd/yxscalc">yxscalc</a> maintained by <a
+                        href="https://github.com/yxsicd">yxsicd</a></p>
                 <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
             </div>
         </div>
@@ -102,30 +97,37 @@
 <script>
     var defaultline = 25;
 
-    var editor = ace.edit("editor1");
-    editor.setTheme("ace/theme/tomorrow_night_eighties");
-    editor.session.setMode("ace/mode/javascript");
-    editor.setOption("minLines", defaultline);
-    editor.setOption("maxLines", defaultline);
+    function makeEditor(idstr) {
+        var editor = ace.edit(idstr);
+        editor.setTheme("ace/theme/tomorrow_night_eighties");
+        editor.session.setMode("ace/mode/javascript");
+        editor.setOption("minLines", defaultline);
+        editor.setOption("maxLines", defaultline);
+        return editor;
+    }
+
+    var editor1 = makeEditor("editor1");
+    var editor2 = makeEditor("editor2");
 
 </script>
 <script>
-    $.get("dev/githubdb.js").then(function(d){editor.setValue(d);})
-    $("#bt_run").click(function () {
-        eval(editor.getValue());
+    var req = new XMLHttpRequest();
+    req.open("GET", "dev/githubdb.js");
+    req.onload = function (d) {
+        editor1.setValue(d.target.responseText)
+    };
+    req.send();
+    $("#bt_run1").click(function () {
+        eval(editor1.getValue());
     });
 
-    var options = {
-        valueNames: [ 'name', 'city' ]
-    };
+    $("#bt_run2").click(function () {
+        eval(editor2.getValue());
+    });
 
-    var listObj = new List('hacker-list', options);
-
-    for(var i=0;i<100;i++) {
-        listObj.add({name: "name"+i, city: "city"+i})
-    }
 </script>
 
 
 </body>
+
 </html>
