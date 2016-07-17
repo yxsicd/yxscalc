@@ -15,7 +15,48 @@
 
     var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext('2d');
-    var myoff = 0;
+
+    var n1 = {x: 200, y: 200};
+    var n2 = {x: 400, y: 300};
+    var n3 = {x: 500, y: 400};
+    var n4 = {x: 600, y: 200};
+    var n5 = {x: 800, y: 400};
+
+    var points = [n1, n2, n3, n4, n5];
+    var node_width = 36;
+    var node_height = 36;
+
+    var dragobj;
+
+    canvas.onmousedown = function (d) {
+        // console.log(d);
+        var x = d.offsetX;
+        var y = d.offsetY;
+        for (var i = 0; i < points.length; i++) {
+            var po = points[i];
+            if ((x - po.x) < node_width && (y - po.y) < node_height
+                    && (x - po.x) > 0 && (y - po.y) > 0) {
+                dragobj = po;
+                console.log(dragobj);
+                break;
+            }
+        }
+
+    }
+    canvas.onmousemove = function (d) {
+        // console.log(d);
+        var x = d.offsetX;
+        var y = d.offsetY;
+        if (dragobj) {
+            dragobj.x = x;
+            dragobj.y = y;
+        }
+
+    }
+    canvas.onmouseup = function (d) {
+        dragobj = undefined;
+    }
+
 
     function getstep(i, count) {
         var tick = parseInt(new Date().valueOf() / 50);
@@ -28,6 +69,17 @@
             return 0;
         }
     }
+
+    function getmid(p1, p2, step) {
+        return {x: (p2.x - p1.x) * step + p1.x, y: (p2.y - p1.y) * step + p1.y}
+    }
+
+    function getmid2(p1, p2, step, steplength) {
+        var unitp = getunit({x: p2.x - p1.x, y: p2.y - p1.y}, steplength);
+        return {x: unitp.x * step + p1.x, y: unitp.y * step + p1.y}
+    }
+
+
     function drawball(p1, p2, step, offset) {
         if (step == 0) {
             return;
@@ -37,7 +89,7 @@
         }
 
         context.save();
-        var radius = 3;
+        var radius = 9;
         context.beginPath();
         context.arc((p2.x - p1.x) * step + p1.x + offset.x, (p2.y - p1.y) * step + p1.y + offset.y, radius, 0, 2 * Math.PI, false);
         context.lineWidth = 1;
@@ -52,10 +104,10 @@
         }
     }
 
-    function drawline(n1, n2, color, offset)
-    {
+    function drawline(n1, n2, color, offset) {
         context.save();
         context.strokeStyle = color;
+        context.lineWidth = 6;
         context.beginPath();
         context.moveTo(n1.x + offset.x, n1.y + offset.y);
         context.lineTo(n2.x + offset.x, n2.y + offset.y);
@@ -63,7 +115,41 @@
         context.restore();
     }
 
-    function drawpath(paths, offset) {
+    function getunit(lengthP, scale) {
+        length = Math.sqrt(Math.pow(lengthP.x, 2) + Math.pow(lengthP.y, 2));
+        unitP = {x: lengthP.x / length * scale, y: lengthP.y / length * scale}
+        return unitP;
+    }
+
+    function getlength(lengthP) {
+        length = Math.sqrt(Math.pow(lengthP.x, 2) + Math.pow(lengthP.y, 2));
+        return length;
+    }
+
+    function getoffsetP(p1, p2) {
+        return {x: p2.x - p1.x, y: p2.y - p1.y}
+    }
+
+
+    function drawdashline(p1, p2, offset, scolor1, scolor2) {
+        var splitCount = getlength(getoffsetP(p1, p2));
+        var spix = 30;
+        var dlength = Math.round(splitCount / spix) - 1;
+
+        var xxleft = splitCount - spix * dlength;
+
+        var xcolor;
+        for (var j = 0; j < dlength; j += 1) {
+            xcolor = scolor1;
+            if (j % 2 == 0) {
+                xcolor = scolor2;
+            }
+            drawline(getmid2(p1, p2, j, spix), getmid2(p1, p2, (j + 1), spix), xcolor, offset);
+        }
+    }
+
+
+    function drawpath(paths, offset, scolor1, scolor2) {
         if (paths.length < 1) {
             return;
         }
@@ -71,14 +157,9 @@
             offset = {x: 0, y: 0}
         }
         context.save();
-        context.strokeStyle = "#ff0000";
-        context.beginPath();
-        context.moveTo(paths[0].x + offset.x, paths[0].y + offset.y);
-        for (var i = 1; i < paths.length; i++) {
-            context.lineTo(paths[i].x + offset.x, paths[i].y + offset.y);
+        for (var i = 0; i < paths.length - 1; i++) {
+            drawdashline(paths[i], paths[i + 1], offset, scolor1, scolor2);
         }
-        context.lineWidth = 3;
-        context.stroke();
         context.restore();
     }
 
@@ -89,16 +170,12 @@
         if (!offset) {
             offset = {x: 0, y: 0}
         }
-
         context.save();
-        context.fillStyle="#ff0000";
-        context.beginPath();
-        context.rect(nodes[0].x + offset.x, nodes[0].y + offset.y, 36, 36);
-        context.fill();
+        context.fillStyle = "#0000ff";
 
-        for (var i = 1; i < nodes.length; i++) {
+        for (var i = 0; i < nodes.length; i++) {
             context.beginPath();
-            context.rect(nodes[i].x + offset.x, nodes[i].y + offset.y, 36, 36);
+            context.rect(nodes[i].x + offset.x, nodes[i].y + offset.y, node_width, node_height);
             context.fill();
         }
 
@@ -115,24 +192,15 @@
         context.lineJoin = "round";
         context.globalAlpha = 1;
 
-        var n1 = {x: 200, y: 200};
-        var n2 = {x: 400, y: 300};
-        var n3 = {x: 500, y: 400};
-        var n4 = {x: 600, y: 200};
-        var n5 = {x: 800, y: 400};
 
-        var points=[n1, n2, n3, n4, n5];
-
-        drawnode(points);
-
-        drawpath(points, {x: 18, y: 0});
-        drawpath(points, {x: 18, y: 36});
-        drawpath(points, {x: 18, y: 18});
+        drawpath(points, {x: 18, y: 0}, "#0000ff", "#ff0000");
+        drawpath(points, {x: 18, y: 36}, "#00ff00", "#0000ff");
+        drawpath(points, {x: 18, y: 18}, "#ff0000", "#00ff00");
 
         drawpathball(points, {x: 18, y: 0});
         drawpathball(points, {x: 18, y: 36});
         drawpathball(points, {x: 18, y: 18});
-
+        drawnode(points);
         window.requestAnimationFrame(mydraw);
     }
     window.requestAnimationFrame(mydraw);
