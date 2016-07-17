@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Yxscalc : yxs tool website.">
+</head>
+
+<body>
+
+<canvas id="myCanvas" width="1000" height="1000"></canvas>
+<script type="text/javascript">
+
+    var canvas = document.getElementById('myCanvas');
+    var context = canvas.getContext('2d');
+    var myoff = 0;
+
+    function getstep(i, count) {
+        var tick = parseInt(new Date().valueOf() / 50);
+        var step = tick % (count * 10);
+        //console.log({tick: tick, step: step})
+        if (step > i * 10 && step < ((i + 1) * 10)) {
+            return (step - i * 10) / 10
+        }
+        else {
+            return 0;
+        }
+    }
+    function drawball(p1, p2, step, offset) {
+        if (step == 0) {
+            return;
+        }
+        if (!offset) {
+            offset = {x: 0, y: 0}
+        }
+
+        context.save();
+        var radius = 3;
+        context.beginPath();
+        context.arc((p2.x - p1.x) * step + p1.x + offset.x, (p2.y - p1.y) * step + p1.y + offset.y, radius, 0, 2 * Math.PI, false);
+        context.lineWidth = 1;
+        context.strokeStyle = '#003300';
+        context.stroke();
+        context.restore();
+    }
+
+    function drawpathball(nodes, offset) {
+        for (var i = 0; i < nodes.length - 1; i++) {
+            drawball(nodes[i], nodes[i + 1], getstep(i, nodes.length), offset);
+        }
+    }
+
+    function drawline(n1, n2, color, offset)
+    {
+        context.save();
+        context.strokeStyle = color;
+        context.beginPath();
+        context.moveTo(n1.x + offset.x, n1.y + offset.y);
+        context.lineTo(n2.x + offset.x, n2.y + offset.y);
+        context.stroke();
+        context.restore();
+    }
+
+    function drawpath(paths, offset) {
+        if (paths.length < 1) {
+            return;
+        }
+        if (!offset) {
+            offset = {x: 0, y: 0}
+        }
+        context.save();
+        context.strokeStyle = "#ff0000";
+        context.beginPath();
+        context.moveTo(paths[0].x + offset.x, paths[0].y + offset.y);
+        for (var i = 1; i < paths.length; i++) {
+            context.lineTo(paths[i].x + offset.x, paths[i].y + offset.y);
+        }
+        context.lineWidth = 3;
+        context.stroke();
+        context.restore();
+    }
+
+    function drawnode(nodes, offset) {
+        if (nodes.length < 1) {
+            return;
+        }
+        if (!offset) {
+            offset = {x: 0, y: 0}
+        }
+
+        context.save();
+        context.fillStyle="#ff0000";
+        context.beginPath();
+        context.rect(nodes[0].x + offset.x, nodes[0].y + offset.y, 36, 36);
+        context.fill();
+
+        for (var i = 1; i < nodes.length; i++) {
+            context.beginPath();
+            context.rect(nodes[i].x + offset.x, nodes[i].y + offset.y, 36, 36);
+            context.fill();
+        }
+
+        context.restore();
+
+    }
+
+
+    function mydraw() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.strokeStyle = "#ff0000";
+
+        context.lineCap = 'round';
+        context.lineJoin = "round";
+        context.globalAlpha = 1;
+
+        var n1 = {x: 200, y: 200};
+        var n2 = {x: 400, y: 300};
+        var n3 = {x: 500, y: 400};
+        var n4 = {x: 600, y: 200};
+        var n5 = {x: 800, y: 400};
+
+        var points=[n1, n2, n3, n4, n5];
+
+        drawnode(points);
+
+        drawpath(points, {x: 18, y: 0});
+        drawpath(points, {x: 18, y: 36});
+        drawpath(points, {x: 18, y: 18});
+
+        drawpathball(points, {x: 18, y: 0});
+        drawpathball(points, {x: 18, y: 36});
+        drawpathball(points, {x: 18, y: 18});
+
+        window.requestAnimationFrame(mydraw);
+    }
+    window.requestAnimationFrame(mydraw);
+</script>
+</body>
+
+<html>
