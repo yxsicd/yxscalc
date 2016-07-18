@@ -16,11 +16,11 @@
     var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext('2d');
 
-    var n1 = {x: 200, y: 200};
-    var n2 = {x: 400, y: 300};
-    var n3 = {x: 500, y: 400};
-    var n4 = {x: 600, y: 200};
-    var n5 = {x: 800, y: 400};
+    var n1 = {x: 50, y: 350};
+    var n2 = {x: 500, y: 200};
+    var n3 = {x: 200, y: 500};
+    var n4 = {x: 500, y: 500};
+    var n5 = {x: 650, y: 350};
 
     var points = [n1, n2, n3, n4, n5];
     var node_width = 36;
@@ -74,50 +74,82 @@
         return {x: (p2.x - p1.x) * step + p1.x, y: (p2.y - p1.y) * step + p1.y}
     }
 
-    function getmid2(p1, p2, step, steplength) {
-        var unitp = getunit({x: p2.x - p1.x, y: p2.y - p1.y}, steplength);
+    function getmid2(p1, p2, step) {
+        var unitp = getunit({x: p2.x - p1.x, y: p2.y - p1.y});
         return {x: unitp.x * step + p1.x, y: unitp.y * step + p1.y}
     }
 
+    function copyargs(defaultargs, args) {
+        for (a in args) {
+            defaultargs[a] = args[a];
+        }
+    }
 
-    function drawball(p1, p2, step, offset) {
-        if (step == 0) {
+
+    function drawball(p1, p2, args) {
+        var defaultargs = {
+            ballsize: 10,
+            lineWidth: 3,
+            strokeStyle: "#ff0000",
+            step: 0,
+            offset: {x: 0, y: 0}
+        }
+        copyargs(defaultargs, args);
+
+        if (defaultargs.step == 0) {
             return;
         }
-        if (!offset) {
-            offset = {x: 0, y: 0}
-        }
 
         context.save();
-        var radius = 9;
+        var radius = defaultargs.ballsize;
         context.beginPath();
-        context.arc((p2.x - p1.x) * step + p1.x + offset.x, (p2.y - p1.y) * step + p1.y + offset.y, radius, 0, 2 * Math.PI, false);
-        context.lineWidth = 1;
-        context.strokeStyle = '#003300';
+        context.arc((p2.x - p1.x) * defaultargs.step + p1.x + defaultargs.offset.x, (p2.y - p1.y) * defaultargs.step + p1.y + defaultargs.offset.y, radius, 0, 2 * Math.PI, false);
+        context.lineWidth = defaultargs.lineWidth;
+        context.strokeStyle = defaultargs.strokeStyle;
         context.stroke();
         context.restore();
     }
 
-    function drawpathball(nodes, offset) {
+    function drawpathball(nodes, args) {
+        var defaultargs = {
+            ballsize: 10,
+            lineWidth: 3,
+            strokeStyle: "#ff0000",
+            step: 0,
+            offset: {x: 0, y: 0}
+        }
+        copyargs(defaultargs, args);
+
         for (var i = 0; i < nodes.length - 1; i++) {
-            drawball(nodes[i], nodes[i + 1], getstep(i, nodes.length), offset);
+            defaultargs.step = getstep(i, nodes.length);
+            drawball(nodes[i], nodes[i + 1], defaultargs);
         }
     }
 
-    function drawline(n1, n2, color, offset) {
+    function drawline(n1, n2, args) {
+
+        var defaultargs = {
+            lineWidth: 3,
+            strokeStyle: "#ff0000",
+            step: 0,
+            offset: {x: 0, y: 0}
+        }
+        copyargs(defaultargs, args);
+
+
         context.save();
-        context.strokeStyle = color;
-        context.lineWidth = 6;
+        context.strokeStyle = defaultargs.strokeStyle;
+        context.lineWidth = defaultargs.lineWidth;
         context.beginPath();
-        context.moveTo(n1.x + offset.x, n1.y + offset.y);
-        context.lineTo(n2.x + offset.x, n2.y + offset.y);
+        context.moveTo(n1.x + defaultargs.offset.x, n1.y + defaultargs.offset.y);
+        context.lineTo(n2.x + defaultargs.offset.x, n2.y + defaultargs.offset.y);
         context.stroke();
         context.restore();
     }
 
-    function getunit(lengthP, scale) {
+    function getunit(lengthP) {
         length = Math.sqrt(Math.pow(lengthP.x, 2) + Math.pow(lengthP.y, 2));
-        unitP = {x: lengthP.x / length * scale, y: lengthP.y / length * scale}
+        unitP = {x: lengthP.x / length, y: lengthP.y / length}
         return unitP;
     }
 
@@ -131,51 +163,101 @@
     }
 
 
-    function drawdashline(p1, p2, offset, scolor1, scolor2) {
+    function drawdashline(p1, p2, args) {
+
+        var defaultargs = {
+            dashlength: 5,
+            lineWidth: 3,
+            strokeStyle: "#ff0000",
+            step: 0,
+            offset: {x: 0, y: 0},
+            dashcolor1: "#ffffff",
+            dashcolor2: "#000000"
+        }
+        copyargs(defaultargs, args);
+
         var splitCount = getlength(getoffsetP(p1, p2));
-        var spix = 30;
+        var spix = defaultargs.dashlength;
         var dlength = Math.round(splitCount / spix) - 1;
 
         var xxleft = splitCount - spix * dlength;
 
         var xcolor;
         for (var j = 0; j < dlength; j += 1) {
-            xcolor = scolor1;
+            xcolor = defaultargs.dashcolor1;
             if (j % 2 == 0) {
-                xcolor = scolor2;
+                xcolor = defaultargs.dashcolor2;
             }
-            drawline(getmid2(p1, p2, j, spix), getmid2(p1, p2, (j + 1), spix), xcolor, offset);
+            defaultargs.strokeStyle = xcolor;
+            drawline(getmid2(p1, p2, j * spix), getmid2(p1, p2, (j + 1) * spix), defaultargs);
         }
+        defaultargs.strokeStyle = xcolor;
+        drawline(getmid2(p1, p2, splitCount - xxleft), getmid2(p1, p2, splitCount), defaultargs);
+
     }
 
 
-    function drawpath(paths, offset, scolor1, scolor2) {
-        if (paths.length < 1) {
-            return;
+    function drawdashpath(paths, args) {
+        var defaultargs = {
+            dashlength: 5,
+            lineWidth: 3,
+            strokeStyle: "#ff0000",
+            step: 0,
+            offset: {x: 0, y: 0},
+            dashcolor1: "#ffffff",
+            dashcolor2: "#000000"
         }
-        if (!offset) {
-            offset = {x: 0, y: 0}
-        }
+        copyargs(defaultargs, args);
+
         context.save();
         for (var i = 0; i < paths.length - 1; i++) {
-            drawdashline(paths[i], paths[i + 1], offset, scolor1, scolor2);
+            drawdashline(paths[i], paths[i + 1], defaultargs);
         }
         context.restore();
     }
 
-    function drawnode(nodes, offset) {
+    function drawpath(paths, args) {
+        var defaultargs = {
+            dashlength: 5,
+            lineWidth: 3,
+            strokeStyle: "#ff0000",
+            step: 0,
+            offset: {x: 0, y: 0},
+            dashcolor1: "#ffffff",
+            dashcolor2: "#000000"
+        }
+        copyargs(defaultargs, args);
+
+
+        context.save();
+        for (var i = 0; i < paths.length - 1; i++) {
+            drawline(paths[i], paths[i + 1], defaultargs);
+        }
+        context.restore();
+    }
+
+    function drawnode(nodes, args) {
         if (nodes.length < 1) {
             return;
         }
-        if (!offset) {
-            offset = {x: 0, y: 0}
+        var defaultargs = {
+            dashlength: 5,
+            lineWidth: 3,
+            strokeStyle: "#ff0000",
+            fillStyle: "#00ff00",
+            step: 0,
+            offset: {x: 0, y: 0},
+            dashcolor1: "#ffffff",
+            dashcolor2: "#000000"
         }
+        copyargs(defaultargs, args);
+
         context.save();
-        context.fillStyle = "#0000ff";
+        context.fillStyle = defaultargs.fillStyle;
 
         for (var i = 0; i < nodes.length; i++) {
             context.beginPath();
-            context.rect(nodes[i].x + offset.x, nodes[i].y + offset.y, node_width, node_height);
+            context.rect(nodes[i].x + defaultargs.offset.x, nodes[i].y + defaultargs.offset.y, node_width, node_height);
             context.fill();
         }
 
@@ -192,15 +274,20 @@
         context.lineJoin = "round";
         context.globalAlpha = 1;
 
+        var master=[points[0],points[1],points[4]];
+        var backup=[points[0],points[2],points[3], points[4]];
 
-        drawpath(points, {x: 18, y: 0}, "#0000ff", "#ff0000");
-        drawpath(points, {x: 18, y: 36}, "#00ff00", "#0000ff");
-        drawpath(points, {x: 18, y: 18}, "#ff0000", "#00ff00");
+        drawpath(points, {offset: {x: 18, y: 18}, dashcolor1: "#00ff00", dashcolor2: "#0000ff", lineWidth: 1});
+        drawpath([points[0],points[1],points[4], points[0], points[2]], {offset: {x: 18, y: 18}, dashcolor1: "#00ff00", dashcolor2: "#0000ff", lineWidth: 1});
 
-        drawpathball(points, {x: 18, y: 0});
-        drawpathball(points, {x: 18, y: 36});
-        drawpathball(points, {x: 18, y: 18});
-        drawnode(points);
+        drawpath(master, {lineWidth: 10,strokeStyle:"#00ff00",  offset: {x: 18, y: 0}, dashcolor1: "#0000ff", dashcolor2: "#ff0000"});
+
+        drawdashpath(backup, {offset: {x: 18, y: 36}, dashcolor1: "#ffffff", dashcolor2: "#000000", dashlength: 10});
+
+        drawpathball(master, {offset: {x: 18, y: 0},ballsize:7});
+        drawpathball(backup, {offset: {x: 18, y: 36},ballsize:7});
+
+        drawnode(points, {fillStyle: "#0000ff"});
         window.requestAnimationFrame(mydraw);
     }
     window.requestAnimationFrame(mydraw);
