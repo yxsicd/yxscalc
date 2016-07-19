@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Yxscalc : yxs tool website.">
+</head>
+
+<body>
+<svg width="325" height="325" xmlns="http://www.w3.org/2000/svg">
+    <path d="M80 80
+           A 45 45, 0, 0, 0, 125 125
+           L 125 80 Z" fill="green"/>
+    <path d="M230 80
+           A 45 45, 0, 1, 0, 275 125
+           L 275 80 Z" fill="red"/>
+    <path d="M80 230
+           A 45 45, 0, 0, 1, 125 275
+           L 125 230 Z" fill="purple"/>
+    <path d="M230 230
+           A 45 45, 0, 1, 1, 275 275
+           L 275 230 Z" fill="blue"/>
+</svg>
+
+<canvas id="myCanvas" width="2000" height="2000"></canvas>
+<script type="text/javascript">
+
+    var canvas = document.getElementById('myCanvas');
+    var context = canvas.getContext('2d');
+    context.lineWidth = 3;
+    context.strokeStyle = "#ff0000";
+    context.lineCap = 'round';
+    context.lineJoin = "round";
+    context.globalAlpha = 1;
+
+    var n1 = {x: 50, y: 350};
+    var n2 = {x: 500, y: 200};
+    var n3 = {x: 200, y: 500};
+    var n4 = {x: 500, y: 500};
+    var n5 = {x: 650, y: 350};
+
+    var points = [n1, n2, n3, n4, n5];
+    var node_width = 36;
+    var node_height = 36;
+
+    var dragobj;
+
+    canvas.onmousedown = function (d) {
+        // console.log(d);
+        var x = d.offsetX;
+        var y = d.offsetY;
+        for (var i = 0; i < points.length; i++) {
+            var po = points[i];
+            if ((x - po.x) < node_width/2 && (y - po.y) < node_height/2
+                    && (x - po.x) > -node_width/2 && (y - po.y) > -node_height/2) {
+                dragobj = po;
+                console.log(dragobj);
+                break;
+            }
+        }
+    }
+    canvas.onmousemove = function (d) {
+        // console.log(d);
+        var x = d.offsetX;
+        var y = d.offsetY;
+        if (dragobj) {
+            dragobj.x = x;
+            dragobj.y = y;
+        }
+
+    }
+    canvas.onmouseup = function (d) {
+        dragobj = undefined;
+    }
+
+
+    function getstep(tick, step, count) {
+        var nstep = parseInt(new Date().valueOf() / tick) % step;
+        return count / step * nstep;
+    }
+
+
+    function copyargs(defaultargs, args) {
+        for (a in args) {
+            defaultargs[a] = args[a];
+        }
+    }
+
+
+    function getPathString(ps) {
+        var arr = [];
+        for (var i in ps) {
+            if (i == 0) {
+                arr.push("M", ps[i].x, ps[i].y);
+            } else {
+                arr.push("L", ps[i].x, ps[i].y);
+            }
+        }
+        var ret = arr.join(' ');
+        return ret;
+    }
+
+    function getRectString(p, w, h) {
+        var arr = ["M", p.x, p.y, "m", "-" + w / 2, "-" + h / 2, "l", w, 0, "l", "0", h, "l", "-" + w, 0];
+        arr.push("l", 0, "-" + h);
+        return arr.join(' ');
+    }
+
+    function getRectArrayString(ps, w, h) {
+        var ret=[];
+        for (var i  in ps) {
+            ret.push(getRectString(ps[i], w, h));
+        }
+        return ret.join(' ');
+    }
+
+    function drawball(p,r)
+    {
+        var arr=[];
+        arr.push("")
+    }
+
+
+    function mydraw() {
+
+
+        var master = [points[0], points[1], points[4]];
+        var backup = [points[0], points[2], points[3], points[4]];
+        context.clearRect(0,0,canvas.width,canvas.height);
+        var pathstr=getPathString(master);
+        var path = new Path2D(pathstr);
+        context.stroke(path);
+
+        var path=document.createElementNS("http://www.w3.org/2000/svg","path");
+        path.setAttribute("d",pathstr);
+
+        var sl=getstep(30,100,path.getTotalLength());
+        var np=path.getPointAtLength(sl);
+        var myd="M "+np.x+" "+np.y+" m 20 20 l 60 20 l 40 60 z";
+        context.stroke(new Path2D(getRectString(np,4,4)));
+
+
+        var pathstr2=getPathString(backup);
+        var path2 = new Path2D(pathstr2);
+        context.stroke(path2);
+
+        var pathstr = getRectArrayString(points, node_width, node_height);
+        var path3 = new Path2D(pathstr);
+        context.stroke(path3);
+
+        window.requestAnimationFrame(mydraw);
+    }
+    window.requestAnimationFrame(mydraw);
+</script>
+</body>
+
+<html>
