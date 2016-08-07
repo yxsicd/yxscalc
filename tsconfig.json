@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "target": "es3",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "outFile": "dist/yxs.js",
+        "allowJs": false
+    },
+    "exclude": [
+        "node_modules",
+        "dist",
+        "3rd"
+    ]
+}

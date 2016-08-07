@@ -9,6 +9,13 @@
 </head>
 
 <body>
+
+<svg width="190" height="160" xmlns="http://www.w3.org/2000/svg">
+
+    <path d="M130 110 C 130 120 180 150 180 140" stroke="black" fill="transparent"/>
+
+</svg>
+
 <svg width="325" height="325" xmlns="http://www.w3.org/2000/svg">
     <path d="M80 80
            A 45 45, 0, 0, 0, 125 125
@@ -30,7 +37,7 @@
     var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext('2d');
     context.lineWidth = 3;
-    context.strokeStyle = "#ff0000";
+    context.strokeStyle = "#0074D9";
     context.lineCap = 'round';
     context.lineJoin = "round";
     context.globalAlpha = 1;
@@ -91,11 +98,16 @@
 
     function getPathString(ps) {
         var arr = [];
-        for (var i in ps) {
+        for (var i=0;i<ps.length-1;i++) {
+
+            var vec={ps[i+1].x-ps[i].x,ps[i+1].y-ps[i].y};
+
             if (i == 0) {
                 arr.push("M", ps[i].x, ps[i].y);
+                arr.push("C", ps[i].x, ps[i].y);
             } else {
-                arr.push("L", ps[i].x, ps[i].y);
+                arr.push("", ps[i+1].x, ps[i+1].y);
+                arr.push("", ps[i+1].x, ps[i+1].y);
             }
         }
         var ret = arr.join(' ');
@@ -132,7 +144,7 @@
         var pathstr=getPathString(master);
         var path = new Path2D(pathstr);
         context.stroke(path);
-
+        var svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
         var path=document.createElementNS("http://www.w3.org/2000/svg","path");
         path.setAttribute("d",pathstr);
 
