@@ -22,6 +22,7 @@ function initScript() {
 
   loadScript.index = 0;
   var scripturl = [
+    "/3rd/vue.js",
     "/3rd/FileSaver.min.js",
     "/3rd/localforage.min.js",
     "/3rd/lodash.min.js",
