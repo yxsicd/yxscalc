@@ -76,7 +76,7 @@ var m_table = new Vue({
               var status = item["status"];
               var express_check = item["express_check"];
               var express = item["express"];
-              var lastData = express ? express.data.traceList[express.data.traceList.length - 1] : "";
+              var lastData = express ? express.data.traceList[express.data.traceList.length - 1] : undefined;
               ret.push([key, status, JSON.stringify(lastData), JSON.stringify(express_check)]);
             }
             that.rows = ret;
