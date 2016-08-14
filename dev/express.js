@@ -64,7 +64,7 @@ function docheck(orderList) {
       // debugger
       orderid = that.orderList[orderIndex];
       if (!orderid) {
-        for (var i = 0; i < 500000; i++) {
+        for (var i = 0; i < 30000; i++) {
           var idx = parseInt("1881965933383944") + i;
           yxscache[idx] = yxscache["1881965933383944"];
         };
