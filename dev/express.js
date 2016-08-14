@@ -51,6 +51,7 @@ function refreshOrderList(orderList, callback) {
     function checkOrder() {
       orderIndex++;
       // debugger
+      that.orderList["index"] = orderIndex;
       orderid = that.orderList[orderIndex];
       if (!orderid) {
         // for (var i = 0; i < 4000; i++) {

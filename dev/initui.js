@@ -121,6 +121,14 @@ var m_table = new Vue({
       });
       return fi_row;
     },
+    check_index: function () {
+      var that = this;
+      return that.orderlist["index"];
+    },
+    check_count: function () {
+      var that = this;
+      return that.orderlist.length;
+    },
     rows_show: function () {
       var that = this;
       var rows_filter = that.rows_filter;
