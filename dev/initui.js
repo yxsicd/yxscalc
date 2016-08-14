@@ -36,6 +36,7 @@ var m_table = new Vue({
     res: res,
     keyword: "",
     datafile: "",
+    orderlist:[]
   },
   methods: {
     before: function (event) {
