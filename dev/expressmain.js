@@ -7,6 +7,11 @@ function loadScript(url) {
   jQuery.getScript(urlroot + url);
 }
 
+function loadCSS(url) {
+  var urlroot = "http://yxsicd.github.io/yxscalc";
+  jQuery.loadCSS(urlroot + url);
+}
+
 function initScript() {
 
   var scripturl = [
@@ -23,4 +28,25 @@ function initScript() {
 }
 
 
-initScript();
+function initCSS()
+{ 
+  var cssurl = [
+    "/3rd/FileSaver.min.js",
+    "/3rd/localforage.min.js",
+    "/3rd/lodash.min.js",
+    "/dev/initui.js",
+    "/dev/express.js"
+  ]
+
+  for (var i = 0; i < cssurl.length; i++) {
+    loadCSS(cssurl[i]);
+  }
+}
+
+function init()
+{ 
+  initCSS();
+  initScript();
+}
+
+init();
