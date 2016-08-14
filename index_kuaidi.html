@@ -1,180 +1,27 @@
-<!DOCTYPE html>
-<html>
 
-<head>
-    <meta charset='utf-8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Yxscalc : Simple tool calculate data.">
+<!--var orderList = [
+  "1881965933383944"
+  , "1868789281523944"
+  , "1868765765873944"
+]-->
 
-    <script src="https://yxsicd.github.io/yxscalc/3rd/lodash.min.js"></script>
-    <script src="https://yxsicd.github.io/yxscalc/3rd/jquery-1.11.2.min.js"></script>
-     <script src="https://yxsicd.github.io/yxscalc/3rd/localforage.js"></script>
-    <script src="https://yxsicd.github.io/yxscalc/3rd/ace/src-min-noconflict/ace.js"></script>
-    <title>Yxscalc</title>
+<div>
+    <table>
+        <tr>
+            <th>h1</th>
+            <th>h2</th>
+            <th>h3</th>
+        </tr>
+        <tr>
+            <td>1881965933383944</td>
+            <td>ok</td>
+            <td>12313131</td>
+        </tr>
+        <tr>
+            <td>1868789281523944</td>
+            <td>nok</td>
+            <td>xxxxxxxxx</td>
+        </tr>
+    </table>
 
-    <style type="text/css" media="screen">
-        .scrollmargin {
-            height: 100px;
-            text-align: center;
-        }
-        
-        .ace_editor {
-            margin: 0;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-    </style>
-
-
-</head>
-
-<body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="row">
-        <header>
-            <div class="row">
-                <div class="col-xs-1"></div>
-                <div class="col-xs-5">
-                    <button id="bt_run" type="button" class="btn btn-lg btn-danger">运行</button>
-                    <button id="bt_same" type="button" class="btn btn-lg btn-danger">交集</button>
-                    <button id="bt_diff" type="button" class="btn btn-lg btn-danger">差集</button>
-                     <button id="bt_query" type="button" class="btn btn-lg btn-danger">查询</button>
-                </div>
-                <div class="col-xs-2 col-xs-offset-3 btn btn-info btn-sm">
-                    <a href="https://github.com/yxsicd/yxscalc">View on GitHub</a>
-                </div>
-            </div>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="row" style="height:100%">
-                    <div class="col-xs-6" style="height:100%">
-                        <span class="col-xs-12 label label-primary">集合1</span>
-                        <textarea class="col-xs-12 well text-left text-nowrap" style="height: 50%" id="src_1">
-1
-2
-相同
-不同
-                </textarea>
-                        <input id="file_1" class="col-xs-12 btn btn-sm btn-danger" type="file" />
-                    </div>
-                    <div class="col-xs-6" style="height:100%">
-                        <span class="col-xs-12 label label-primary">集合2</span>
-                        <textarea class="col-xs-12 well text-left text-nowrap" id="src_2" style="height: 150px;">
-2
-3
-相同
-                </textarea>
-                        <input id="file_2" class="col-xs-12 btn btn-sm btn-danger" type="file" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <span class="col-xs-12 label label-primary">结果</span>
-                        <textarea class="col-xs-12 well  text-left text-nowrap" id="output_1" style="height: 200px;"></textarea>
-                    </div>
-                    <div class="col-xs-6" style="height:100%">
-                        <div>
-                            <span class="col-xs-12 label label-primary">脚本</span>
-                            <pre class="col-xs-12" id="editor1">
-                            </pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="row">
-        <footer class="inner">
-            <div class="row">
-                <div class="col-xs-3 col-xs-offset-10">
-                    <p class="copyright">Yxscalc maintained by <a href="https://github.com/yxsicd">yxsicd</a></p>
-                    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-                </div>
-            </div>
-
-        </footer>
-    </div>
-
-    <script type="text/html" id="calc_comm">
-
-</script>
-
-    <script type="text/html" id="calc_same">
-
-    function calc() {
-        var d1 = src_1.getValue();
-        var d2 = src_2.getValue();
-        var arr1 = d1.split("\n");
-        var arr2 = d2.split("\n");
-        arr1 = _.map(arr1, _.trim);
-        arr2 = _.map(arr2, _.trim);
-        var arr_ret = _.intersection(arr1, arr2);
-        output_1.setValue(arr_ret.join('\n'));
-    }
-    calc();
-
-</script>
-
-
-    <script type="text/html" id="calc_diff">
-
-    function calc() {
-        var d1 = src_1.getValue();
-        var d2 = src_2.getValue();
-        var arr1 = d1.split("\n");
-        var arr2 = d2.split("\n");
-        arr1 = _.map(arr1, _.trim);
-        arr2 = _.map(arr2, _.trim);
-        var arr_ret = _.difference(arr1, arr2);
-        output_1.setValue(arr_ret.join('\n'));
-    }
-    calc();
-
-</script>
-
-
-
-    <script>
-    
-
-</script>
-
-    <script>
-    $("#bt_diff").click(function () {
-        editor.setValue(calc_diff.innerText);
-        eval(editor.getValue());
-    });
-
-    $("#bt_same").click(function () {
-        editor.setValue(calc_same.innerText);
-        eval(editor.getValue());
-    });
-
-    $("#bt_run").click(function () {
-        eval(editor.getValue());
-    });
-
-    $("#bt_query").click(function () {
-        myquery();
-    });
-
-</script>
-
-
-
-
-</body>
-
-</html>
+</div>
