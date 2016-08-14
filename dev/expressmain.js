@@ -1,9 +1,9 @@
 
 
-var urlroot = "http://yxsicd.github.io/yxscalc";
 
 
 function loadScript(url) {
+  var urlroot = "http://yxsicd.github.io/yxscalc";
   jQuery.getScript(urlroot + url);
 }
 
@@ -15,9 +15,10 @@ function initScript() {
   ]
 
   for (var i in scripturl) {
+    debugger;
     loadScript(scripturl[i]);
   }
-
-
 }
+
+
 initScript();
