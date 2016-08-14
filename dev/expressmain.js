@@ -14,8 +14,7 @@ function initScript() {
     "/dev/express.js"
   ]
 
-  for (var i in scripturl) {
-    debugger;
+  for (var i = 0; i < scripturl.length; i++) {
     loadScript(scripturl[i]);
   }
 }
