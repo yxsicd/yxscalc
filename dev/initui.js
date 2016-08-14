@@ -123,11 +123,19 @@ var m_table = new Vue({
     },
     check_index: function () {
       var that = this;
-      return that.orderlist["index"];
+      if (that.orderlist && that.orderlist["index"]) {
+        return that.orderlist["index"];
+      } else {
+        return 0;
+      }
     },
     check_count: function () {
       var that = this;
-      return that.orderlist.length;
+      if (that.orderlist) {
+        return that.orderlist.length;
+      } else {
+        return 0;
+      }
     },
     rows_show: function () {
       var that = this;
