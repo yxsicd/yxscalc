@@ -69,6 +69,8 @@ var m_table = new Vue({
             var keys = Object.keys(data);
             var ret = [];
             for (var i = 0; i < keys.length; i++) {
+              if (!key) { continue; }
+
               var key = keys[i];
               var item = data[key];
               var status = item["status"];
