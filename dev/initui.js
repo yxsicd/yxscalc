@@ -46,14 +46,14 @@ var m_table = new Vue({
     },
     exportfile: function (event) {
       var that = this;
-      
-      var datarow = [keys];
-      for (var i = 0; i < that.rows; i++)
-      {
-        datarow.push(that.rows[i]);
-      }  
 
-      var retstr=d3.csv.format(datarow);
+      var datarow = [];
+      datarow.push(that.keys.map(function (d) { return d.name }));
+      for (var i = 0; i < that.rows.length; i++) {
+        datarow.push(that.rows[i]);
+      }
+
+      var retstr = d3.csvFormatRows(datarow);
       var blob = new Blob([retstr], { type: "text/plain;charset=utf-8" });
       saveAs(blob, "export_" + new Date().valueOf() + ".csv");
     },
