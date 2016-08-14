@@ -52,7 +52,7 @@ function refreshOrderList(mythat, callback) {
       orderIndex++;
       // debugger
       mythat.check_index = orderIndex;
-      orderid = that.orderList[orderIndex];
+      orderid = mythat.orderList[orderIndex];
       if (!orderid) {
         // for (var i = 0; i < 4000; i++) {
         //   var idx = parseInt("1881965933383944") + i;
