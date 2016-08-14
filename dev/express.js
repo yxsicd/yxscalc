@@ -72,7 +72,6 @@ function refreshOrderList(orderList, callback) {
         var list = mydiv.querySelector("[logisticsId]");
         // console.log(list);
         if (!list) {
-
           checkOrder();
           return;
         }

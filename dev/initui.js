@@ -22,7 +22,8 @@ var res = {
   "search": "搜索",
   "rows_count": "行数",
   "datafile": "导入数据",
-  "queryorder": "开始查询"
+  "queryorder": "开始查询",
+  "exportfile": "导出数据"
 };
 
 var m_table = new Vue({
@@ -42,6 +43,19 @@ var m_table = new Vue({
     },
     after: function (event) {
       this.page++
+    },
+    exportfile: function (event) {
+      var that = this;
+      
+      var datarow = [keys];
+      for (var i = 0; i < that.rows; i++)
+      {
+        datarow.push(that.rows[i]);
+      }  
+
+      var retstr=d3.csv.format(datarow);
+      var blob = new Blob([retstr], { type: "text/plain;charset=utf-8" });
+      saveAs(blob, "export_" + new Date().valueOf() + ".csv");
     },
     queryorder: function (event) {
 
