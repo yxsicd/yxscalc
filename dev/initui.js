@@ -1,16 +1,16 @@
 
 var d_table = {
   keys: [
-    { name: 'orderid' },
-    { name: 'status' },
-    { name: 'latest' },
-    { name: 'detail' }
+    { name: '订单号' },
+    { name: '状态' },
+    { name: '最后状态' },
+    { name: '详情' }
   ],
   rows: [
   ]
 }
 
-for (var i = 0; i < 30000; i++) {
+for (var i = 0; i < 30; i++) {
   d_table.rows.push(
     ["orderid" + i, "status" + i, "latest" + i, "detail" + i]
   )
