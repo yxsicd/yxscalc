@@ -32,12 +32,17 @@
             <label for="pagesize_input">{{ res.page_size }}</label>
             <input type="text" class="form-control" id="pagesize_input" placeholder="{{ res.page_size }}" style="width:60px" v-model="page_size">
           </div>
-          <div class="form-group col-xs-4">
+          <div class="form-group col-xs-2">
             <input type="text" class="form-control" placeholder="{{ res.search }}" v-model="keyword">
           </div>
           <div class="form-group col-xs-2">
             <label for="pagesize_input">{{ res.rows_count }}</label>
             <span>: {{rows_count}}</span>
+          </div>
+          <div class="form-group col-xs-4">
+            <label for="pagesize_input">{{ res.datafile }}</label>
+            <input type="file" class="form-control" placeholder="{{ res.datafile }}" @change="filechange" style=“widht:90px”>
+            <button type="button" class="btn btn-info btn-xs" @click="queryorder">{{res.queryorder}}</button>
           </div>
         </div>
       </div>
@@ -56,88 +61,7 @@
 
   </div>
 
-  <script>
-
- var d_table={
-    keys: [
-      { name: 'orderid' },
-      { name: 'status' },
-      { name: 'latest' },
-      { name: 'detail' }
-    ], 
-    rows: [
-    ]
-  }
-
-  for(var i=0;i<30000;i++)
-  {
-    d_table.rows.push(
-      ["orderid"+i,"status"+i, "latest"+i,"detail"+i]
-    )
-  }
-
-var res={
-  "page":"页数",
-  "page_size":"页大小",
-  "search":"搜索",
-  "rows_count":"行数"
-};
-
-var m_table = new Vue({
-  el: '#table_order',
-  data: {
-    keys:d_table.keys,
-    rows:d_table.rows,
-    page:1,
-    page_size:10,
-    res:res,
-    keyword:""
-  },
-  methods:{
-    before: function (event) {
-      this.page--
-    },     
-    after: function (event) {
-      this.page++
-    }
-  },
-  computed: {
-    // 一个计算属性的 getter
-    rows_count: function () {
-      // `this` 指向 vm 实例
-      return this.rows_filter.length;
-    },
-    rows_filter:function()
-    {
-      var that=this;
-      var fi_row=that.rows.filter(function(d){
-      var rowstring=JSON.stringify(d);
-        return rowstring.match(that.keyword);
-      });  
-      return fi_row;
-    },
-    rows_show:function(){
-      var that=this;
-      var rows_filter=that.rows_filter;
-      var page = parseInt(that.page);
-      var page_size = parseInt(that.page_size);
-
-      var index = (page-1)*page_size;
-      if(index >= rows_filter.length){
-        var page_end = Math.round(rows_filter.length / page_size)
-        that.page=page_end;
-        index = (page_end-1)*page_size;
-      }
-      if(index < 0){
-         index=0;
-         that.page=1;
-      }
-      var ret= rows_filter.slice(index, index + page_size);
-      return ret;
-    }
-  }
-})
-
+  <script src="dev/myvue.js">
 
 </script>
 

@@ -19,7 +19,6 @@ function loadCSS(url) {
 }
 
 function initScript() {
-
   loadScript.index = 0;
   var scripturl = [
     "/3rd/vue.js",
@@ -28,7 +27,7 @@ function initScript() {
     "/3rd/lodash.min.js",
     "/dev/express.js",
     "/dev/initui.js"
-  ]
+  ];
   loadScript(scripturl);
 }
 
@@ -54,7 +53,7 @@ function initui() {
 
   jQuery(rootdiv).css({
     position: "absolute", top: "100px", left: "30px",
-    "background-color": "white", "width": "500px", "height": "600px"
+    "background-color": "white", "width": "90%", "height": "800px", "z-index": 1000
   })
 }
 
