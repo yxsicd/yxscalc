@@ -71,7 +71,11 @@ var m_table = new Vue({
             for (var i = 0; i < keys.length; i++) {
               var key = keys[i];
               var item = data[key];
-              ret.push([key, item.status, "", ""]);
+              var status = item["status"];
+              var express_check = item["express_check"];
+              var express = item["express"];
+
+              ret.push([key, status, express_check, express]);
             }
             that.rows = ret;
           }
