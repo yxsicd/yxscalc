@@ -90,7 +90,7 @@ function docheck(orderList) {
 
     function checkExpress(tradeId, cpCode, mailNo) {
       window.mygetdata = function getdata(d) {
-        console.log(d);
+        // console.log(d);
         if (!yxscache[tradeId]) { yxscache[tradeId] = {}; }
         yxscache[tradeId]["express_check"] = [tradeId, cpCode, mailNo];
         yxscache[tradeId]["express"] = d;
@@ -125,7 +125,7 @@ function docheck(orderList) {
           yxscache[orderid]["status"] = order_status.textContent;
         }
         var list = mydiv.querySelector("[logisticsId]");
-        console.log(list);
+        // console.log(list);
         if (!list) {
 
           checkOrder();
