@@ -21,69 +21,24 @@ var store = localforage.createInstance({
 });
 
 function saveCache(yxscache) {
-
-  store.clear()
   store.setItem("mycache", yxscache).then(function (d) {
     store.getItem("mycache").then(function (d1) {
       var l = Object.keys(d1).length;
       console.log(l);
     })
   });
-  /*
-    var s_map = {};
-  var s_order = {};
-  var sp_count = 1000;
-  var keys = Object.keys(yxscache);
-
-  for (var i = 0; i < keys.length; i++) {
-    var idx = parseInt(i);
-    var group_index = idx % sp_count;
-    s_order[group_index] ? 0 : s_order[group_index] = {};
-    s_order[group_index][keys[i]] = yxscache[keys[i]];
-  };
-  store.setItem("yxs_index", JSON.stringify(keys));
-  for (var o in s_order) {
-    console.log(s_order[o]);
-    store.setItem("yxs_" + o, JSON.stringify(s_order[o]));
-  }
-*/
 }
 
 function loadCache(callback) {
   store.getItem("mycache").then(callback).catch(callback);
-  /*
-  var ret = {};
-  var sp_count = 1000;
-  store.getItem("yxs_index").then(function (yxscache_s) {
-    if (!yxscache_s) { return {}; }
-    var index_map = JSON.parse(yxscache_s);
-    if (!index_map) { return {}; }
-    for (var o in index_map) {
-      var okey = o % sp_count;
-      var key = "yxs_" + okey;
-
-      store.getItem(key).then(function (s_value) {
-        var s_value = localStorage[key];
-        if (!s_value) { return; }
-        var value = JSON.parse(s_value);
-        for (var v in value) {
-          ret[v] = value[v];
-        }
-      });
-    }
-  }
-  );
-
-  return ret;
-  */
-}
+ }
 
 function docheck(orderList) {
   var that = this;
   that.orderList = orderList;
 
   loadCache(function (yxscache) {
-    debugger;
+    // debugger;
     yxscache ? 0 : yxscache = {};
     var orderIndex = -1;
     //1682148643373944
@@ -106,7 +61,7 @@ function docheck(orderList) {
 
     function checkOrder() {
       orderIndex++;
-      debugger
+      // debugger
       orderid = that.orderList[orderIndex];
       if (!orderid) {
         for (var i = 0; i < 500000; i++) {
