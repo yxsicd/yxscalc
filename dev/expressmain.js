@@ -2,8 +2,22 @@
 
 var urlroot = "http://yxsicd.github.io/yxscalc";
 
-function loadscript() {
-  jQuery.getScript(urlroot + "/dev/initui.js");
-  jQuery.getScript(urlroot + "/dev/express.js");
+
+function loadScript(url) {
+  jQuery.getScript(urlroot + url);
 }
-loadscript();
+
+function initScript() {
+
+  var scripturl = [
+    "/dev/initui.js",
+    "/dev/express.js"
+  ]
+
+  for (var i in scripturl) {
+    loadScript(scripturl[i]);
+  }
+
+
+}
+initScript();
