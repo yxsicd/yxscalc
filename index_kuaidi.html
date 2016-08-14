@@ -1,27 +1,52 @@
-
 <!--var orderList = [
   "1881965933383944"
   , "1868789281523944"
   , "1868765765873944"
-]-->
+]
 
-<div>
-    <table>
-        <tr>
-            <th>h1</th>
-            <th>h2</th>
-            <th>h3</th>
-        </tr>
-        <tr>
-            <td>1881965933383944</td>
-            <td>ok</td>
-            <td>12313131</td>
-        </tr>
-        <tr>
-            <td>1868789281523944</td>
-            <td>nok</td>
-            <td>xxxxxxxxx</td>
-        </tr>
+<ul id="example-1">
+  <li v-for="item in items">
+    {{ item.message }}
+  </li>
+</ul>
+
+
+-->
+
+  <div id="table_order">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="row form-inline">
+          <div class="form-group col-xs-2">
+            <label for="page_input">{{ res.page }}</label>
+            <button type="button" class="btn btn-info btn-xs" @click="before"><</button>
+            <input type="text" class="form-control" id="page_input" placeholder="{{ res.page }}" style="width:60px" v-model="page">
+            <button type="button" class="btn btn-info btn-xs" @click="after">></button>
+          </div>
+          <div class="form-group col-xs-2">
+            <label for="pagesize_input">{{ res.page_size }}</label>
+            <input type="text" class="form-control" id="pagesize_input" placeholder="{{ res.page_size }}" style="width:60px" v-model="page_size">
+          </div>
+          <div class="form-group col-xs-4">
+            <input type="text" class="form-control" placeholder="{{ res.search }}" v-model="keyword">
+          </div>
+          <div class="form-group col-xs-2">
+            <label for="pagesize_input">{{ res.rows_count }}</label>
+            <span>: {{rows_count}}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <table class="table table-condensed table-striped table-bordered table-hover">
+      <tr>
+        <th v-for="key in keys">
+          {{key.name}}
+        </th>
+      </tr>
+      <tr v-for="row in rows_show">
+        <td v-for="item in row">{{item}}</td>
+      </tr>
     </table>
 
-</div>
+  </div>

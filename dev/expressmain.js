@@ -26,14 +26,19 @@ function initScript() {
     "/3rd/FileSaver.min.js",
     "/3rd/localforage.min.js",
     "/3rd/lodash.min.js",
-    "/dev/express.js"
+    "/dev/express.js",
+    "/dev/initui.js"
   ]
   loadScript(scripturl);
 }
 
+// <link rel="stylesheet" href="3rd/bootstrap-3.3.2-dist/css/bootstrap.min.css">
+// <link rel="stylesheet" href="3rd/bootstrap-3.3.2-dist/css/bootstrap-theme.min.css">
 
 function initCSS() {
   var cssurl = [
+    "/3rd/bootstrap-3.3.2-dist/css/bootstrap.min.css",
+    "/3rd/bootstrap-3.3.2-dist/css/bootstrap-theme.min.css"
   ]
 
   for (var i = 0; i < cssurl.length; i++) {
