@@ -51,9 +51,11 @@ function refreshOrderList(mythat, callback) {
     function checkOrder() {
       orderIndex++;
       // debugger
-      mythat.check_index = orderIndex;
+      if (orderIndex <= mythat.orderlist.length) {
+        mythat.check_index = orderIndex;
+      }
       orderid = mythat.orderlist[orderIndex];
-      if (!orderid) {
+      if (!orderid || orderIndex == mythat.orderlist.length) {
         // for (var i = 0; i < 4000; i++) {
         //   var idx = parseInt("1881965933383944") + i;
         //   yxscache[idx] = yxscache["1881965933383944"];
