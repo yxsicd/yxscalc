@@ -45,6 +45,7 @@ var m_table = new Vue({
     },
     queryorder: function (event) {
 
+      var that = this;
       if (!this.files) {
         return;
       }
@@ -63,6 +64,19 @@ var m_table = new Vue({
           // console.log(olist);
           this.orderlist = olist;
           console.log("queryorder: ", this.orderlist);
+
+          function refresh(data) {
+            var keys = Object.keys(data);
+            var ret = [];
+            for (var i = 0; i < keys.length; i++) {
+              var key = keys[i];
+              var item = data[key];
+              ret.push([key, item.status, "", ""]);
+            }
+            that.rows = ret;
+          }
+
+          refreshOrderList(orderlist, refresh);
         }
         reader.readAsText(this.files[0], "gb2312");
         // reader.readAsArrayBuffer(files[0]);

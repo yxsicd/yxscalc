@@ -19,10 +19,11 @@ function saveCache(yxscache) {
 
 function loadCache(callback) {
   yxs_store.getItem("mycache").then(callback).catch(callback);
- }
+}
 
-function refreshOrderList(orderList) {
+function refreshOrderList(orderList, callback) {
   var that = this;
+  that.callback = callback;
   that.orderList = orderList;
 
   loadCache(function (yxscache) {
@@ -56,6 +57,7 @@ function refreshOrderList(orderList) {
           var idx = parseInt("1881965933383944") + i;
           yxscache[idx] = yxscache["1881965933383944"];
         };
+        that.callback ? that.callback(yxscache) : 0;
         saveCache(yxscache);
         return;
       }
@@ -86,9 +88,9 @@ function refreshOrderList(orderList) {
   });
 }
 
-var orderList = [
-  "1881965933383944"
-  , "1868789281523944"
-  , "1868765765873944"
-]
-refreshOrderList(orderList);
+// var orderList = [
+//   "1881965933383944"
+//   , "1868789281523944"
+//   , "1868765765873944"
+// ]
+// refreshOrderList(orderList);
