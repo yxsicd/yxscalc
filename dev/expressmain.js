@@ -53,8 +53,8 @@ function initui() {
 
 
   jQuery(rootdiv).css({
-    position: "absolute", top: "0px", left: "0px",
-    "background-color": "blue", "width": "500px", "height": "600px"
+    position: "absolute", top: "100px", left: "30px",
+    "background-color": "white", "width": "500px", "height": "600px"
   })
 }
 
