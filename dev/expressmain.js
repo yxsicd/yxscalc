@@ -10,6 +10,9 @@ function loadScript(url) {
 function initScript() {
 
   var scripturl = [
+    "3rd/FileSaver.min.js",
+    "3rd/localforage.min.js",
+    "3rd/lodash.min.js",
     "/dev/initui.js",
     "/dev/express.js"
   ]
