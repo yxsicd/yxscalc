@@ -69,9 +69,10 @@ var m_table = new Vue({
             var keys = Object.keys(data);
             var ret = [];
             for (var i = 0; i < keys.length; i++) {
-              if (!key) { continue; }
+             
 
               var key = keys[i];
+              if (!key || key=="undefined") { continue; }
               var item = data[key];
               var status = item["status"];
               var express_check = item["express_check"];
