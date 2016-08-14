@@ -36,7 +36,8 @@ var m_table = new Vue({
     res: res,
     keyword: "",
     datafile: "",
-    orderlist:[]
+    orderlist: [],
+    check_index: 0
   },
   methods: {
     before: function (event) {
@@ -97,7 +98,7 @@ var m_table = new Vue({
             that.rows = ret;
           }
 
-          refreshOrderList(that.orderlist, refresh);
+          refreshOrderList(that, refresh);
         }
         reader.readAsText(this.files[0], "gb2312");
         // reader.readAsArrayBuffer(files[0]);
@@ -121,14 +122,6 @@ var m_table = new Vue({
         return rowstring.match(that.keyword);
       });
       return fi_row;
-    },
-    check_index: function () {
-      var that = this;
-      if (that.orderlist && that.orderlist["index"]) {
-        return that.orderlist["index"];
-      } else {
-        return 0;
-      }
     },
     check_count: function () {
       var that = this;

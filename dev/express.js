@@ -21,10 +21,10 @@ function loadCache(callback) {
   yxs_store.getItem("mycache").then(callback).catch(callback);
 }
 
-function refreshOrderList(orderList, callback) {
+function refreshOrderList(mythat, callback) {
   var that = this;
   that.callback = callback;
-  that.orderList = orderList;
+  that.orderList = mythat.orderList;
 
   loadCache(function (yxscache) {
     // debugger;
@@ -51,7 +51,7 @@ function refreshOrderList(orderList, callback) {
     function checkOrder() {
       orderIndex++;
       // debugger
-      that.orderList["index"] = orderIndex;
+      mythat.check_index = orderIndex;
       orderid = that.orderList[orderIndex];
       if (!orderid) {
         // for (var i = 0; i < 4000; i++) {
