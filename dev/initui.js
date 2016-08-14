@@ -76,7 +76,7 @@ var m_table = new Vue({
             that.rows = ret;
           }
 
-          refreshOrderList(orderlist, refresh);
+          refreshOrderList(this.orderlist, refresh);
         }
         reader.readAsText(this.files[0], "gb2312");
         // reader.readAsArrayBuffer(files[0]);
