@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="description" content="Yxscalc : Simple tool calculate data.">
+
+  <script src="3rd/lodash.min.js"></script>
+  <script src="3rd/jquery-1.11.2.min.js"></script>
+  <script src="3rd/vue.js"></script>
+  <link rel="stylesheet" href="3rd/bootstrap-3.3.2-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="3rd/bootstrap-3.3.2-dist/css/bootstrap-theme.min.css">
+  <!--<script src="3rd/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+    -->
+</head>
+
+<style>
+  .mouse {
+    position: absolute;
+  }
+  
+  .sp {}
+  
+  .sp_y {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: blue;
+    cursor: row-resize;
+  }
+  
+  .sp_x {
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    background-color: blue;
+    cursor: col-resize;
+  }
+  
+  .panel {
+    position: absolute;
+    background-color: green;
+    height:100px;
+    width:100px;
+  }
+</style>
+
+
+<body>
+
+  <div class="mouse"></div>
+
+  <div id="maindiv" class="panel" style="width:500px;height:400px;top:100px;left:300px;">
+
+    <div id="p00" class="panel">top</div>
+    <div id="p01" class="panel"></div>
+    <div id="p02" class="panel"></div>
+
+
+    <div class="sp sp_y" style="top:30%;"></div>
+    <div class="panel" style="width:500px;height:300px;top:10px;left:10px;">
+      <div class="panel c-0" style="background-color: red;"></div>
+      <div class="panel c-1"  style="background-color: blue;"></div>
+      <div class="panel c-2"  style= "background-color: yellow;"></div>
+      <div class="sp sp_x" style="left:20%;"></div>
+      <div class="sp sp_x" style="left:60%;"></div>
+    </div>
+  </div>
+
+  <script src="dev/panel.js">
+
+
+  </script>
+
+</body>
+
+</html>
