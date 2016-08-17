@@ -56,7 +56,7 @@ var m_table = new Vue({
       }
 
       var retstr = d3.csvFormatRows(datarow);
-      var blob = new Blob([retstr], { type: "text/plain;charset=utf-8" });
+      var blob = new Blob([retstr], { type: "text/plain;charset=gb2312" });
       saveAs(blob, "export_" + new Date().valueOf() + ".csv");
     },
     queryorder: function (event) {
