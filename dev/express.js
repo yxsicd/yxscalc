@@ -28,7 +28,7 @@ function refreshOrderList(mythat, callback) {
 
   loadCache(function (yxscache) {
     // debugger;
-    yxscache ? 0 : yxscache = {};
+    yxscache = {};
     var orderIndex = -1;
     //1682148643373944
 
