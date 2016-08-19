@@ -76,7 +76,7 @@ var m_table = new Vue({
             var ds = d.split("\t")
             var id = parseInt(ds[0]);
             return id;
-          }).filter(function (d) { return d; });
+          }).filter(function (d) { return d && (d+"").match("^\\d{16}$") ;});
           // console.log(olist);
           that.orderlist = olist;
           console.log("queryorder: ", that.orderlist);
