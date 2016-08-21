@@ -20,19 +20,34 @@ var node_height = 36;
 
 var dragobj;
 
+var dragall;
+
 canvas.onmousedown = function (d) {
-  // console.log(d);
+
+
   var x = d.offsetX;
   var y = d.offsetY;
-  for (var i = 0; i < points.length; i++) {
-    var po = points[i];
-    if ((x - po.x) < node_width / 2 && (y - po.y) < node_height / 2
-      && (x - po.x) > -node_width / 2 && (y - po.y) > -node_height / 2) {
-      dragobj = po;
-      console.log(dragobj);
-      break;
+
+  if (d.altKey) {
+    var x1 = routesvg.viewBox.baseVal.x;
+    var y1 = routesvg.viewBox.baseVal.y;
+
+    dragall = { ox: x1 + 0, oy: y1 + 0, bx: x + 0, by: y + 0 };
+    console.log(dragall);
+  }
+  else {
+    for (var i = 0; i < points.length; i++) {
+      var po = points[i];
+      if ((x - po.x) < node_width / 2 && (y - po.y) < node_height / 2
+        && (x - po.x) > -node_width / 2 && (y - po.y) > -node_height / 2) {
+        dragobj = po;
+        console.log(dragobj);
+        break;
+      }
     }
   }
+
+
 }
 canvas.onmousemove = function (d) {
   // console.log(d);
@@ -42,10 +57,32 @@ canvas.onmousemove = function (d) {
     dragobj.x = x;
     dragobj.y = y;
   }
+  // console.log([x,y]);
+
+
+  if (d.altKey) {
+    if (dragall) {
+      var mx = parseInt(x) - parseInt(dragall["bx"]);
+      var my = parseInt(y) - parseInt(dragall["by"]);
+
+      // console.log([mx, my]);
+      var ox = parseInt(dragall["ox"]);
+      var oy = parseInt(dragall["oy"]);
+
+      var w2 = routesvg.width.baseVal.value;
+      var h2 = routesvg.height.baseVal.value;
+
+      var ret = (ox+mx*8) + " " + (oy+my*8) + " " + w2 + " " + h2 + " ";
+      routesvg.setAttribute("viewBox", ret)
+    }
+  }
+
+
 
 }
 canvas.onmouseup = function (d) {
   dragobj = undefined;
+  dragall = undefined;
 }
 
 
@@ -133,7 +170,7 @@ function initdraw() {
   //addSVGPath(pathstr2)
 
   var pathstr = getRectArrayString(points, node_width, node_height);
-  var nodes=addSVGPath(pathstr)
+  var nodes = addSVGPath(pathstr)
   topo["node"] = nodes;
 
 
@@ -171,10 +208,10 @@ function makeimg() {
 initdraw();
 
 function mydraw() {
-  
+
   var pathstr = getRectArrayString(points, node_width, node_height);
   topo["node"].setAttribute("d", pathstr);
-  makeimg();
+  //makeimg();
   window.requestAnimationFrame(mydraw);
 }
 window.requestAnimationFrame(mydraw);
