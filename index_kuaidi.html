@@ -46,12 +46,12 @@
     </div>
     <table class="table table-condensed table-striped table-bordered table-hover">
         <tr>
-            <th v-for="key in keys">
+            <th v-for="key in keys" track-by="$index">
                 {{key.name}}
             </th>
         </tr>
-        <tr v-for="row in rows_show">
-            <td v-for="item in row">{{item}}</td>
+        <tr v-for="row in rows_show" track-by="$index">
+            <td v-for="item in row"  track-by="$index">{{item}}</td>
         </tr>
     </table>
 
