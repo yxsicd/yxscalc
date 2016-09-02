@@ -64,10 +64,18 @@ function refreshOrderList(mythat, callback) {
         saveCache(yxscache);
         return;
       }
-      jQuery.get("https://trade.1688.com/order/unify_buyer_detail.htm?orderId=" + orderid).then(function (d) {
+      
+      function parseHtml (d) {
         var mydiv = document.createElement("div");
         mydiv.innerHTML = d;
         var order_status = mydiv.querySelector(".order-status");
+        if(!order_status && window.nowurl!="new_step_order_detail"){
+          //new_step_order_detail.htm
+          jQuery.get("https://trade.1688.com/order/new_step_order_detail.htm?orderId=" + orderid).then(parseHtml);
+          window.nowurl="new_step_order_detail";
+          return;
+        }
+        
         if (!yxscache[orderid]) { yxscache[orderid] = {}; }
         if (order_status) {
           yxscache[orderid]["status"] = order_status.textContent;
@@ -82,7 +90,9 @@ function refreshOrderList(mythat, callback) {
         var cpCode = list.getAttribute("value");
         var mailNo = list.getAttribute("billno");
         checkExpress(tradeId, cpCode, mailNo)
-      });
+      }
+      
+      jQuery.get("https://trade.1688.com/order/unify_buyer_detail.htm?orderId=" + orderid).then(parseHtml);
     }
 
     checkOrder();
