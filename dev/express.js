@@ -65,14 +65,33 @@ function refreshOrderList(mythat, callback) {
         return;
       }
       
+      function parseHtml_new (d) {
+        var mydiv = document.createElement("div");
+        mydiv.innerHTML = d;
+        var order_status = mydiv.querySelector(".order-status");
+        if (!yxscache[orderid]) { yxscache[orderid] = {}; }
+        if (order_status) {
+          yxscache[orderid]["status"] = order_status.textContent;
+        }
+        var list = mydiv.querySelector("[logisticsId]");
+        // console.log(list);
+        if (!list) {
+          checkOrder();
+          return;
+        }
+        var tradeId = list.getAttribute("orderid");
+        var cpCode = list.getAttribute("value");
+        var mailNo = list.getAttribute("billno");
+        checkExpress(tradeId, cpCode, mailNo)
+      }
+      
       function parseHtml (d) {
         var mydiv = document.createElement("div");
         mydiv.innerHTML = d;
         var order_status = mydiv.querySelector(".order-status");
-        if(!order_status && window.nowurl!="new_step_order_detail"){
+        if(!order_status){
           //new_step_order_detail.htm
-          jQuery.get("https://trade.1688.com/order/new_step_order_detail.htm?orderId=" + orderid).then(parseHtml);
-          window.nowurl="new_step_order_detail";
+          jQuery.get("https://trade.1688.com/order/new_step_order_detail.htm?orderId=" + orderid).then(parseHtml_new);
           return;
         }
         
@@ -93,7 +112,9 @@ function refreshOrderList(mythat, callback) {
       }
       
       jQuery.get("https://trade.1688.com/order/unify_buyer_detail.htm?orderId=" + orderid).then(parseHtml);
-      window.nowurl="unify_buyer_detail";
+      
+      
+      
     }
 
     checkOrder();
