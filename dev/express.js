@@ -73,15 +73,15 @@ function refreshOrderList(mythat, callback) {
         if (order_status) {
           yxscache[orderid]["status"] = order_status.textContent;
         }
-        var list = mydiv.querySelector("[logisticsId]");
+        var list = mydiv.querySelector("[data-logisticsid]");
         // console.log(list);
         if (!list) {
           checkOrder();
           return;
         }
-        var tradeId = list.getAttribute("orderid");
-        var cpCode = list.getAttribute("value");
-        var mailNo = list.getAttribute("billno");
+        var tradeId = list.getAttribute("data-logisticsid");
+        var cpCode = list.getAttribute("data-companyno");
+        var mailNo = list.getAttribute("data-billno");
         checkExpress(tradeId, cpCode, mailNo)
       }
       
