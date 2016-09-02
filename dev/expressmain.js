@@ -6,7 +6,7 @@ function loadScript(scripturl) {
   if (!scripturl[loadScript.index]) {
     return;
   }
-  var urlroot = "https://raw.githubusercontent.com/yxsicd/yxscalc/gh-pages/dev";
+  var urlroot = "https://yxsicd.github.io/yxscalc";
   jQuery.getScript(urlroot + scripturl[loadScript.index], function () {
     loadScript.index++
     loadScript(scripturl);
@@ -14,7 +14,7 @@ function loadScript(scripturl) {
 }
 
 function loadCSS(url) {
-  var urlroot = "https://raw.githubusercontent.com/yxsicd/yxscalc/gh-pages/dev";
+  var urlroot = "https://yxsicd.github.io/yxscalc";
   jQuery.loadCSS(urlroot + url);
 }
 
@@ -61,7 +61,7 @@ function initui() {
 function init() {
   initCSS();
   initui();
-  jQuery("#div_root").load("https://raw.githubusercontent.com/yxsicd/yxscalc/gh-pages/dev/index_kuaidi.html", initScript);
+  jQuery("#div_root").load("https://yxsicd.github.io/yxscalc/index_kuaidi.html", initScript);
 }
 
 init();
