@@ -79,7 +79,7 @@ function refreshOrderList(mythat, callback) {
           checkOrder();
           return;
         }
-        var tradeId = list.getAttribute("data-logisticsid");
+        var tradeId = orderid;
         var cpCode = list.getAttribute("data-companyno");
         var mailNo = list.getAttribute("data-billno");
         checkExpress(tradeId, cpCode, mailNo)
