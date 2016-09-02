@@ -93,6 +93,7 @@ function refreshOrderList(mythat, callback) {
       }
       
       jQuery.get("https://trade.1688.com/order/unify_buyer_detail.htm?orderId=" + orderid).then(parseHtml);
+      window.nowurl="unify_buyer_detail";
     }
 
     checkOrder();
