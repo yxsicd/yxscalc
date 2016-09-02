@@ -68,7 +68,7 @@ function refreshOrderList(mythat, callback) {
       function parseHtml_new (d) {
         var mydiv = document.createElement("div");
         mydiv.innerHTML = d;
-        var order_status = mydiv.querySelector(".order-status");
+        var order_status = mydiv.querySelector(".step-detail-header em");
         if (!yxscache[orderid]) { yxscache[orderid] = {}; }
         if (order_status) {
           yxscache[orderid]["status"] = order_status.textContent;
