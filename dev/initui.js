@@ -58,7 +58,7 @@ var m_table = new Vue({
         datarow.push(that.rows[i]);
       }
 
-      var retstr = d3.csvFormatRows(datarow);
+      var retstr = d3.tsvFormatRows(datarow);
       var blob = new Blob([retstr], { type: "text/plain;charset=utf-8" });
       var buffer = new ArrayBuffer(3);
       var bom = new Uint8Array(buffer);
