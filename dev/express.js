@@ -36,7 +36,7 @@ function refreshOrderList(mythat, callback) {
       window.mygetdata = function getdata(d) {
         // console.log(d);
         if (!yxscache[tradeId]) { yxscache[tradeId] = {}; }
-        yxscache[tradeId]["express_check"] = [tradeId, cpCode, mailNo];
+        yxscache[tradeId]["express_check"] = [tradeId, cpCode, mailNo, cpName];
         yxscache[tradeId]["express"] = d;
         checkOrder();
       }
