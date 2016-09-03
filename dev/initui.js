@@ -3,8 +3,11 @@ var d_table = {
   keys: [
     { name: '订单号' },
     { name: '状态' },
-    { name: '最后状态' },
-    { name: '详情' }
+    { name: '当前城市' },
+    { name: '物流最新状态' },
+    { name: '时间'},
+    { name: '物流号' },
+    { name: '物流公司' }
   ],
   rows: [
   ]
@@ -102,7 +105,7 @@ var m_table = new Vue({
                 lastData = express ? express.data.traceList[express.data.traceList.length - 1] : undefined;
               }
               
-              ret.push([key, status, JSON.stringify(lastData), JSON.stringify(express_check)]);
+              ret.push([key, status, lastData.areaName, lastData.remark, lastData.time, express_check.mailNo, express_check.cpName]);
             }
             that.rows = ret;
           }
