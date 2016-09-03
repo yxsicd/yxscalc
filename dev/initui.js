@@ -105,7 +105,7 @@ var m_table = new Vue({
                 lastData = express ? express.data.traceList[express.data.traceList.length - 1] : undefined;
               }
               
-              ret.push([key, status, lastData.areaName, lastData.remark, lastData.time, express_check.mailNo, express_check.cpName]);
+              ret.push([key, status, lastData.areaName, lastData.remark, lastData.time, express_check[1], express_check[3]]);
             }
             that.rows = ret;
           }
