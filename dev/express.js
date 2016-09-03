@@ -41,7 +41,7 @@ function refreshOrderList(mythat, callback) {
         checkOrder();
       }
       jQuery.getScript("https://wuliu.1688.com/order/ajax/logistics_trace_ajax.jsx?_input_charset=UTF-8&tradeId=" +
-        tradeId + "&mailNo=" + mailNo + "&cpCode=" + cpCode + "&callback=mygetdata&cpName="+cpName
+        tradeId + "&mailNo=" + mailNo + "&cpCode=" + cpCode + "&callback=mygetdata&cpName="+window.encodeURI(cpName)
       )
 
       // checkExpress("1868765765873944", "YTO", "700180129588");
