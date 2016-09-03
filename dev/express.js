@@ -32,7 +32,7 @@ function refreshOrderList(mythat, callback) {
     var orderIndex = -1;
     //1682148643373944
 
-    function checkExpress(tradeId, cpCode, mailNo) {
+    function checkExpress(tradeId, cpCode, mailNo, cpName) {
       window.mygetdata = function getdata(d) {
         // console.log(d);
         if (!yxscache[tradeId]) { yxscache[tradeId] = {}; }
@@ -40,8 +40,8 @@ function refreshOrderList(mythat, callback) {
         yxscache[tradeId]["express"] = d;
         checkOrder();
       }
-      jQuery.getScript("https://wuliu.1688.com/order/ajax/logistics_trace_ajax.jsx?tradeId=" +
-        tradeId + "&mailNo=" + mailNo + "&cpCode=" + cpCode + "&callback=mygetdata"
+      jQuery.getScript("https://wuliu.1688.com/order/ajax/logistics_trace_ajax.jsx?_input_charset=UTF-8&tradeId=" +
+        tradeId + "&mailNo=" + mailNo + "&cpCode=" + cpCode + "&callback=mygetdata&cpName="+cpName
       )
 
       // checkExpress("1868765765873944", "YTO", "700180129588");
@@ -82,7 +82,9 @@ function refreshOrderList(mythat, callback) {
         var tradeId = orderid;
         var cpCode = list.getAttribute("data-companyno");
         var mailNo = list.getAttribute("data-billno");
-        checkExpress(tradeId, cpCode, mailNo)
+        //data-companyName
+        var cpName = list.getAttribute("data-companyName");
+        checkExpress(tradeId, cpCode, mailNo, cpName)
       }
       
       function parseHtml (d) {
@@ -108,7 +110,9 @@ function refreshOrderList(mythat, callback) {
         var tradeId = list.getAttribute("orderid");
         var cpCode = list.getAttribute("value");
         var mailNo = list.getAttribute("billno");
-        checkExpress(tradeId, cpCode, mailNo)
+        //companyName
+        var cpName=list.getAttribute("companyName");
+        checkExpress(tradeId, cpCode, mailNo, cpName)
       }
       
       jQuery.get("https://trade.1688.com/order/unify_buyer_detail.htm?orderId=" + orderid).then(parseHtml);
