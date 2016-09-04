@@ -102,8 +102,9 @@ var m_table = new Vue({
               var lastData=undefined;
               if(express && express.data && express.data.traceList)
               {
-                lastData = express ? express.data.traceList[express.data.traceList.length - 1] : undefined;
+                lastData = express ? express.data.traceList[express.data.traceList.length - 1] : {areaName:"",remark:"",time:""};
               }
+              if(!express_check){express_check=[0,1,"",""]}
               
               ret.push([key, status, lastData.areaName, lastData.remark, lastData.time, express_check[2], express_check[3]]);
             }
