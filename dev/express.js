@@ -33,16 +33,22 @@ function refreshOrderList(mythat, callback) {
     //1682148643373944
 
     function checkExpress(tradeId, cpCode, mailNo, cpName) {
-      window.mygetdata = function getdata(d) {
-        // console.log(d);
-        if (!yxscache[tradeId]) { yxscache[tradeId] = {}; }
-        yxscache[tradeId]["express_check"] = [tradeId, cpCode, mailNo, cpName];
-        yxscache[tradeId]["express"] = d;
-        checkOrder();
+      try {
+        window.mygetdata = function getdata(d) {
+          // console.log(d);
+          if (!yxscache[tradeId]) { yxscache[tradeId] = {}; }
+          yxscache[tradeId]["express_check"] = [tradeId, cpCode, mailNo, cpName];
+          yxscache[tradeId]["express"] = d;
+          checkOrder();
+        }
+        jQuery.getScript("https://wuliu.1688.com/order/ajax/logistics_trace_ajax.jsx?_input_charset=UTF-8&tradeId=" +
+          tradeId + "&mailNo=" + mailNo + "&cpCode=" + cpCode + "&callback=mygetdata&cpName=" + window.encodeURI(cpName)
+        )
       }
-      jQuery.getScript("https://wuliu.1688.com/order/ajax/logistics_trace_ajax.jsx?_input_charset=UTF-8&tradeId=" +
-        tradeId + "&mailNo=" + mailNo + "&cpCode=" + cpCode + "&callback=mygetdata&cpName="+window.encodeURI(cpName)
-      )
+      catch (e)
+      { 
+        mygetdata({});
+      }
 
       // checkExpress("1868765765873944", "YTO", "700180129588");
       
