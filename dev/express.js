@@ -47,7 +47,7 @@ function refreshOrderList(mythat, callback) {
       }
       catch (e)
       { 
-        mygetdata({});
+        window.mygetdata({});
       }
 
       // checkExpress("1868765765873944", "YTO", "700180129588");
