@@ -41,17 +41,25 @@ function refreshOrderList(mythat, callback) {
           yxscache[tradeId]["express"] = d;
           checkOrder();
         }
-        jQuery.getScript("https://wuliu.1688.com/order/ajax/logistics_trace_ajax.jsx?_input_charset=UTF-8&tradeId=" +
-          tradeId + "&mailNo=" + mailNo + "&cpCode=" + cpCode + "&callback=mygetdata&cpName=" + window.encodeURI(cpName)
-        )
+        var url = "https://wuliu.1688.com/order/ajax/logistics_trace_ajax.jsx?_input_charset=UTF-8&tradeId=" +
+          tradeId + "&mailNo=" + mailNo + "&cpCode=" + cpCode + "&callback=mygetdata&cpName=" + window.encodeURI(cpName);
+
+        // jQuery.getScript("https://wuliu.1688.com/order/ajax/logistics_trace_ajax.jsx?_input_charset=UTF-8&tradeId=" +
+        //   tradeId + "&mailNo=" + mailNo + "&cpCode=" + cpCode + "&callback=mygetdata&cpName=" + window.encodeURI(cpName)
+        // )
+        jQuery.ajax({
+          url: url,
+          dataType: "script",
+          timeout: 5000,
+          error: function (d1, d2) { window.mygetdata({}); }
+        });
       }
-      catch (e)
-      { 
+      catch (e) {
         window.mygetdata({});
       }
 
       // checkExpress("1868765765873944", "YTO", "700180129588");
-      
+
     }
 
     function checkOrder() {
@@ -70,8 +78,8 @@ function refreshOrderList(mythat, callback) {
         saveCache(yxscache);
         return;
       }
-      
-      function parseHtml_new (d) {
+
+      function parseHtml_new(d) {
         var mydiv = document.createElement("div");
         mydiv.innerHTML = d;
         var order_status = mydiv.querySelector(".step-detail-header em");
@@ -92,17 +100,17 @@ function refreshOrderList(mythat, callback) {
         var cpName = list.getAttribute("data-companyName");
         checkExpress(tradeId, cpCode, mailNo, cpName)
       }
-      
-      function parseHtml (d) {
+
+      function parseHtml(d) {
         var mydiv = document.createElement("div");
         mydiv.innerHTML = d;
         var order_status = mydiv.querySelector(".order-status");
-        if(!order_status){
+        if (!order_status) {
           //new_step_order_detail.htm
           jQuery.get("https://trade.1688.com/order/new_step_order_detail.htm?orderId=" + orderid).then(parseHtml_new);
           return;
         }
-        
+
         if (!yxscache[orderid]) { yxscache[orderid] = {}; }
         if (order_status) {
           yxscache[orderid]["status"] = order_status.textContent;
@@ -117,14 +125,14 @@ function refreshOrderList(mythat, callback) {
         var cpCode = list.getAttribute("value");
         var mailNo = list.getAttribute("billno");
         //companyName
-        var cpName=list.getAttribute("companyName");
+        var cpName = list.getAttribute("companyName");
         checkExpress(tradeId, cpCode, mailNo, cpName)
       }
-      
+
       jQuery.get("https://trade.1688.com/order/unify_buyer_detail.htm?orderId=" + orderid).then(parseHtml);
-      
-      
-      
+
+
+
     }
 
     checkOrder();
