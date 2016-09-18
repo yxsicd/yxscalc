@@ -81,11 +81,16 @@ var m_table = new Vue({
     },
     edit_rows: function () {
       var that = this;
-      var editorrows = that.rows.map(function (d,i) {
+      var editorrows = that.rows.map(function (d, i) {
+        
+        var wp = Array(d.length).fill(i % 2 == 0)
+        wp[1] = true; 
+
         var ret = {
           "value": d,
           "edit": JSON.parse(JSON.stringify(d)),
           "valid": Array(d.length).fill(true),
+          "writeable": wp,
           "select": false,
           "canselect":i%2==0
         };

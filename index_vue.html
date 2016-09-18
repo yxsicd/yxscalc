@@ -64,7 +64,7 @@
           <table class="table table-condensed table-striped table-bordered table-hover">
             <tr v-for="(index,value) in row.edit">
               <td>{{keys[index].name}}</td>
-              <td><input v-model="value" :style='{"border-color": row.valid[index]?"transparent":"red" }' /></td>
+              <td><input v-model="value" :disabled="!row.writeable[index]" :style='{"border-color": row.valid[index]?"transparent":"red" }' /></td>
             </tr>
           </table>
           </td>
