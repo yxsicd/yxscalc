@@ -10,7 +10,7 @@ var d_table = {
   ]
 }
 
-for (var i = 0; i < 3000; i++) {
+for (var i = 0; i < 132000; i++) {
   d_table.rows.push(
     ["orderid" + i, "status" + i, "latest" + i, "detail" + i]
   )
@@ -88,6 +88,7 @@ var m_table = new Vue({
 
         var ret = {
           "value": d,
+          "jsonvalue": JSON.stringify(d),
           "edit": JSON.parse(JSON.stringify(d)),
           "valid": Array(d.length).fill(true),
           "writeable": wp,
@@ -100,9 +101,9 @@ var m_table = new Vue({
     },
     rows_filter: function () {
       var that = this;
+      var re = new RegExp(that.keyword)
       var fi_row = that.edit_rows.filter(function (d) {
-        var rowstring = JSON.stringify(d.value);
-        return rowstring.match(that.keyword);
+        return re.test(d.jsonvalue);
       });
       return fi_row;
     },
