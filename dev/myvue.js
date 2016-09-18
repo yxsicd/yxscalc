@@ -10,7 +10,7 @@ var d_table = {
   ]
 }
 
-for (var i = 0; i < 132000; i++) {
+for (var i = 0; i < 64000; i++) {
   d_table.rows.push(
     ["orderid" + i, "status" + i, "latest" + i, "detail" + i]
   )
@@ -82,18 +82,18 @@ var m_table = new Vue({
     edit_rows: function () {
       var that = this;
       var editorrows = that.rows.map(function (d, i) {
-        
-        var wp = Array(d.length).fill(i % 2 == 0)
-        wp[1] = true; 
 
+        var wp = Array(d.length).fill(i % 2 == 0)
+        wp[1] = true;
+        var jsonvaluestring = JSON.stringify(d);
         var ret = {
           "value": d,
-          "jsonvalue": JSON.stringify(d),
-          "edit": JSON.parse(JSON.stringify(d)),
+          "jsonvalue": jsonvaluestring,
+          "edit": JSON.parse(jsonvaluestring),
           "valid": Array(d.length).fill(true),
           "writeable": wp,
           "select": false,
-          "canselect":i%2==0
+          "canselect": i % 2 == 0
         };
         return ret;
       });
