@@ -37,7 +37,7 @@
           </div>
           <div class="form-group col-xs-2">
             <label for="pagesize_input">{{ res.rows_count }}</label>
-            <span>: {{rows_count}}</span> 
+            <span>: {{rows_count}}</span>
           </div>
           <div class="form-group col-xs-4">
             <label for="pagesize_input">{{ res.datafile }}</label>
@@ -54,9 +54,23 @@
           {{key.name}}
         </th>
       </tr>
-      <tr v-for="row in rows_show">
-        <td v-for="item in row">{{item}}</td>
-      </tr>
+      <template v-for="(index,row) in rows_show">
+        <tr id="row_{{index}}">
+          <td><input type="checkbox" v-model="row.select" :disabled="row.canselect"}} /></td>
+          <td v-for="(index,value) in row.value">{{index}}:{{value}}</td>
+        </tr>
+        <tr id="row_{{index}}">
+          <td>
+          <table class="table table-condensed table-striped table-bordered table-hover">
+            <tr v-for="(index,value) in row.edit">
+              <td>{{keys[index].name}}</td>
+              <td><input v-model="value" :style='{"border-color": row.valid[index]?"transparent":"red" }' /></td>
+            </tr>
+          </table>
+          </td>
+        </tr>
+      </template>
+
     </table>
 
   </div>

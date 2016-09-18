@@ -10,7 +10,7 @@ var d_table = {
   ]
 }
 
-for (var i = 0; i < 30000; i++) {
+for (var i = 0; i < 3000; i++) {
   d_table.rows.push(
     ["orderid" + i, "status" + i, "latest" + i, "detail" + i]
   )
@@ -79,10 +79,24 @@ var m_table = new Vue({
       // `this` 指向 vm 实例
       return this.rows_filter.length;
     },
+    edit_rows: function () {
+      var that = this;
+      var editorrows = that.rows.map(function (d,i) {
+        var ret = {
+          "value": d,
+          "edit": JSON.parse(JSON.stringify(d)),
+          "valid": Array(d.length).fill(true),
+          "select": false,
+          "canselect":i%2==0
+        };
+        return ret;
+      });
+      return editorrows;
+    },
     rows_filter: function () {
       var that = this;
-      var fi_row = that.rows.filter(function (d) {
-        var rowstring = JSON.stringify(d);
+      var fi_row = that.edit_rows.filter(function (d) {
+        var rowstring = JSON.stringify(d.value);
         return rowstring.match(that.keyword);
       });
       return fi_row;
