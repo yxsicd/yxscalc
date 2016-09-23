@@ -10,12 +10,21 @@ var d_table = {
   ]
 }
 
-for (var i = 0; i < 1000; i++) {
+for (var i = 0; i < 200; i++) {
 
-  var row = ["name" + i, "ip" + i, "ip" + i];
-  row.id = i;
-  row.select = true;
+  var value = ["name" + i, "ip" + i, "ip" + i, i];
+  var row = {};
 
+  var wp = Array(value.length).fill(i % 2 == 0)
+  wp[1] = true;
+  row.attr = {
+    select: false,
+    canselect: i % 3 == 0,
+    index: i,
+    "writeable": wp
+
+  };
+  row.value = value;
   d_table.rows.push(row)
 }
 
@@ -29,18 +38,20 @@ var res = {
   "allselect": "全选"
 };
 
+var xdata = {
+  keys: d_table.keys,
+  rows: d_table.rows,
+  page: 1,
+  page_size: 10,
+  res: res,
+  keyword: "",
+  datafile: "",
+  allselect: false
+};
+
 var m_table = new Vue({
   el: '#table_order',
-  data: {
-    keys: d_table.keys,
-    rows: d_table.rows,
-    page: 1,
-    page_size: 10,
-    res: res,
-    keyword: "",
-    datafile: "",
-    allselect: false
-  },
+  data: xdata,
   methods: {
     before: function (event) {
       this.page--
@@ -80,28 +91,31 @@ var m_table = new Vue({
     changeselect: function (event) {
       var that = this;
 
-      if (!that.allselect) {
+      var needselect = !that.allselect;
+
+      if (needselect) {
         for (var i = 0; i < that.rows_show.length; i++) {
-          that.rows_show[i].value.select = that.rows_show[i]["canselect"] && !that.allselect;
-          //that.rows.$set(that.rows_show[i].value.id, that.rows_show[i].value);
+          var ret = that.rows_show[i]["rowobject"]["attr"]["canselect"] && needselect;
+          var index = that.rows_show[i]["rowobject"]["attr"]["index"];
+          var oldvalue = that.rows[index];
+          oldvalue.attr.select = ret;
+          that.rows.$set(index, oldvalue);
         }
       }
       else {
         for (var i = 0; i < that.rows_show.length; i++) {
-          that.rows_show[i].value.select = !that.allselect;
-          //that.rows.$set(that.rows_show[i].value.id, that.rows_show[i].value);
+          var ret = needselect;
+          var index = that.rows_show[i]["rowobject"]["attr"]["index"];
+          var oldvalue = that.rows[index];
+          oldvalue.attr.select = ret;
+          that.rows.$set(index, oldvalue);
         }
       }
-
-      this.$nextTick(function () {
-        console.log(that.allselect)
-      })
-
-
 
     }
   },
   computed: {
+
     // 一个计算属性的 getter
     rows_count: function () {
       // `this` 指向 vm 实例
@@ -110,17 +124,12 @@ var m_table = new Vue({
     edit_rows: function () {
       var that = this;
       var editorrows = that.rows.map(function (d, i) {
-
-        var wp = Array(d.length).fill(i % 2 == 0)
-        wp[1] = true;
-        var jsonvaluestring = JSON.stringify(d);
+        var jsonvaluestring = JSON.stringify(d.value);
         var ret = {
-          "value": d,
+          "rowobject": d,
           "jsonvalue": jsonvaluestring,
           "edit": JSON.parse(jsonvaluestring),
-          "valid": Array(d.length).fill(true),
-          "writeable": wp,
-          "canselect": i % 2 == 0
+          "valid": Array(d.length).fill(false),
         };
         return ret;
       });

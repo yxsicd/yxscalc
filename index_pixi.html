@@ -9,7 +9,7 @@
 
   <script src="3rd/lodash.min.js"></script>
   <script src="3rd/jquery-1.11.2.min.js"></script>
-  <script src="3rd/vue.js"></script>
+  <script src="3rd/pixi.js"></script>
   <link rel="stylesheet" href="3rd/bootstrap-3.3.2-dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="3rd/bootstrap-3.3.2-dist/css/bootstrap-theme.min.css">
   <!--<script src="3rd/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
@@ -33,7 +33,7 @@
             <input type="text" class="form-control" id="pagesize_input" placeholder="{{ res.page_size }}" style="width:60px" v-model="page_size">
           </div>
           <div class="form-group col-xs-2">
-            <input type="text" class="form-control" placeholder="{{ res.search }}" v-model="keyword" debounce="300">
+            <input type="text" class="form-control" placeholder="{{ res.search }}" v-model="keyword">
           </div>
           <div class="form-group col-xs-2">
             <label for="pagesize_input">{{ res.rows_count }}</label>
@@ -50,37 +50,18 @@
     </div>
     <table class="table table-condensed table-striped table-bordered table-hover">
       <tr>
-        <th>index</th>
-        <th>{{allselect}}<input type="checkbox" v-model="allselect" @click="changeselect" :disabled="canallselect"}} />{{res.allselect}}</th>
         <th v-for="key in keys">
           {{key.name}}
         </th>
       </tr>
-      <template v-for="(rs_i,rs_r) in rows_show" track-by="$index">
-        <tr id="row_{{index}}">
-          <td>{{rs_r.rowobject.attr.index}}</td>
-          <td><input type="checkbox" v-model="rs_r.rowobject.attr.select" :disabled="!rs_r.rowobject.attr.canselect"}} />
-          {{rs_r.rowobject.attr.select}}
-          </td>
-          <td v-for="(rin,rv) in rs_r.rowobject.value" track-by="$index">{{rin}}:{{rv}}</td>
-        </tr>
-        <tr id="row_{{index}}">
-          <td>
-          <table class="table table-condensed table-striped table-bordered table-hover">
-            <tr v-for="(rein,rev) in rs_r.edit" track-by="$index">
-              <td>{{keys[rein].name}}</td>
-              <td><input v-model="rev" :disabled="!rs_r.rowobject.attr.writeable[rein]" :style='{"border-color": rs_r.valid[rein]?"transparent":"red" }' /></td>
-            </tr>
-          </table>
-          </td>
-        </tr>
-      </template>
-
+      <tr v-for="row in rows_show">
+        <td v-for="item in row">{{item}}</td>
+      </tr>
     </table>
 
   </div>
 
-  <script src="dev/myvue.js">
+  <script src="dev/mypixi.js">
 
 </script>
 
