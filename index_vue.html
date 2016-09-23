@@ -33,7 +33,7 @@
             <input type="text" class="form-control" id="pagesize_input" placeholder="{{ res.page_size }}" style="width:60px" v-model="page_size">
           </div>
           <div class="form-group col-xs-2">
-            <input type="text" class="form-control" placeholder="{{ res.search }}" v-model="keyword">
+            <input type="text" class="form-control" placeholder="{{ res.search }}" v-model="keyword" debounce="300">
           </div>
           <div class="form-group col-xs-2">
             <label for="pagesize_input">{{ res.rows_count }}</label>
@@ -50,19 +50,20 @@
     </div>
     <table class="table table-condensed table-striped table-bordered table-hover">
       <tr>
+        <td>{{allselect}}<input type="checkbox" v-model="allselect" @click="changeselect" :disabled="canallselect"}} />{{res.allselect}}</td>
         <th v-for="key in keys">
           {{key.name}}
         </th>
       </tr>
-      <template v-for="(index,row) in rows_show">
+      <template v-for="(index,row) in rows_show" track-by="$index">
         <tr id="row_{{index}}">
-          <td><input type="checkbox" v-model="row.select" :disabled="row.canselect"}} /></td>
-          <td v-for="(index,value) in row.value">{{index}}:{{value}}</td>
+          <td><input type="checkbox" v-model="row.value.select" :disabled="row.canselect"}} /></td>
+          <td v-for="(index,value) in row.value" track-by="$index">{{index}}:{{value}}</td>
         </tr>
         <tr id="row_{{index}}">
           <td>
           <table class="table table-condensed table-striped table-bordered table-hover">
-            <tr v-for="(index,value) in row.edit">
+            <tr v-for="(index,value) in row.edit" track-by="$index">
               <td>{{keys[index].name}}</td>
               <td><input v-model="value" :disabled="!row.writeable[index]" :style='{"border-color": row.valid[index]?"transparent":"red" }' /></td>
             </tr>

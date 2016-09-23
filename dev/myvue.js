@@ -1,19 +1,22 @@
 
 var d_table = {
   keys: [
-    { name: 'orderid' },
-    { name: 'status' },
-    { name: 'latest' },
-    { name: 'detail' }
+    { name: 'name' },
+    { name: 'ip' },
+    { name: 'lsrid' },
+    { name: 'id' }
   ],
   rows: [
   ]
 }
 
-for (var i = 0; i < 64000; i++) {
-  d_table.rows.push(
-    ["orderid" + i, "status" + i, "latest" + i, "detail" + i]
-  )
+for (var i = 0; i < 1000; i++) {
+
+  var row = ["name" + i, "ip" + i, "ip" + i];
+  row.id = i;
+  row.select = true;
+
+  d_table.rows.push(row)
 }
 
 var res = {
@@ -22,7 +25,8 @@ var res = {
   "search": "搜索",
   "rows_count": "行数",
   "datafile": "导入数据",
-  "queryorder": "开始查询"
+  "queryorder": "开始查询",
+  "allselect": "全选"
 };
 
 var m_table = new Vue({
@@ -35,6 +39,7 @@ var m_table = new Vue({
     res: res,
     keyword: "",
     datafile: "",
+    allselect: false
   },
   methods: {
     before: function (event) {
@@ -71,6 +76,29 @@ var m_table = new Vue({
     filechange: function (event) {
       // console.log(event);
       this.files = event.target.files;
+    },
+    changeselect: function (event) {
+      var that = this;
+
+      if (!that.allselect) {
+        for (var i = 0; i < that.rows_show.length; i++) {
+          that.rows_show[i].value.select = that.rows_show[i]["canselect"] && !that.allselect;
+          //that.rows.$set(that.rows_show[i].value.id, that.rows_show[i].value);
+        }
+      }
+      else {
+        for (var i = 0; i < that.rows_show.length; i++) {
+          that.rows_show[i].value.select = !that.allselect;
+          //that.rows.$set(that.rows_show[i].value.id, that.rows_show[i].value);
+        }
+      }
+
+      this.$nextTick(function () {
+        console.log(that.allselect)
+      })
+
+
+
     }
   },
   computed: {
@@ -92,7 +120,6 @@ var m_table = new Vue({
           "edit": JSON.parse(jsonvaluestring),
           "valid": Array(d.length).fill(true),
           "writeable": wp,
-          "select": false,
           "canselect": i % 2 == 0
         };
         return ret;
@@ -124,6 +151,7 @@ var m_table = new Vue({
         that.page = 1;
       }
       var ret = rows_filter.slice(index, index + page_size);
+
       return ret;
     }
   }

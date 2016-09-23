@@ -16,7 +16,7 @@ var n5 = { x: 650, y: 1550 };
 
 var points = [n1, n2, n3, n4, n5];
 
-for (var i = 0; i < 50000; i++) {
+for (var i = 0; i < 20000; i++) {
   var r = Math.round(i / 140);
   var c = i % 140;
 
@@ -28,9 +28,7 @@ var node_width = 10;
 var node_height = 10;
 
 var dragobj;
-
 var dragall;
-
 var temppoint = routesvg.createSVGPoint()
 
 canvas.onmousedown = function (d) {
