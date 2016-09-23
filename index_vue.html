@@ -57,15 +57,15 @@
         </th>
       </tr>
       <template v-for="(rs_i,rs_r) in rows_show" track-by="$index">
-        <tr id="row_{{index}}">
+        <tr id="row_{{rs_r.rowobject.attr.index}}">
           <td>{{rs_r.rowobject.attr.index}}</td>
           <td><input type="checkbox" v-model="rs_r.rowobject.attr.select" :disabled="!rs_r.rowobject.attr.canselect"}} />
           {{rs_r.rowobject.attr.select}}
           </td>
           <td v-for="(rin,rv) in rs_r.rowobject.value" track-by="$index">{{rin}}:{{rv}}</td>
         </tr>
-        <tr id="row_{{index}}">
-          <td>
+        <tr id="row_{{rs_r.rowobject.attr.index}}"  v-show="rs_r.rowobject.attr.select">
+          <td :colspan="rs_r.rowobject.value.length+10">
           <table class="table table-condensed table-striped table-bordered table-hover">
             <tr v-for="(rein,rev) in rs_r.edit" track-by="$index">
               <td>{{keys[rein].name}}</td>
