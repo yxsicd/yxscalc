@@ -80,10 +80,13 @@ var m_table = new Vue({
         var retarr = [];
         that.selectlist = retarr;
       }
-    }
+    },
+    editnow: function (v)
+    { 
+      this.editinglist = [v];
+    }  
   },
   computed: {
-
     // 一个计算属性的 getter
     rows_count: function () {
       // `this` 指向 vm 实例

@@ -61,7 +61,7 @@
           <td>{{rs_r.rowobject.attr.index}}
             <input type="checkbox" :value="rs_r.rowobject.attr.index"
              v-bind:true-value="rs_r.rowobject.attr.index" v-bind:false-value="rs_r.rowobject.attr.index"
-             v-model="editinglist" :disabled="!rs_r.rowobject.attr.canselect"}} />
+             v-model="editinglist" @click="editnow(rs_r.rowobject.attr.index)" :disabled="!rs_r.rowobject.attr.canselect"}} />
             {{editinglist}}
           </td>
           <td>
@@ -70,7 +70,7 @@
           </td>
           <td v-for="(rin,rv) in rs_r.rowobject.value" track-by="$index">{{rin}}:{{rv}}</td>
         </tr>
-        <tr id="row_{{rs_r.rowobject.attr.index}}"  v-show="editinglist.indexOf(rs_r.rowobject.attr.index)!=-1">
+        <tr id="row_{{rs_r.rowobject.attr.index}}"  v-show="editinglist.indexOf(rs_r.rowobject.attr.index)==(editinglist.length-1) && editinglist.length>0">
           <td :colspan="rs_r.rowobject.value.length+10">
           <table class="table table-condensed table-striped table-bordered table-hover">
             <tr v-for="(rein,rev) in rs_r.edit" track-by="$index">
