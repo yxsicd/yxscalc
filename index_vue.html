@@ -41,8 +41,8 @@
           </div>
           <div class="form-group col-xs-4">
             <label for="pagesize_input">{{ res.datafile }}</label>
-            <input type="file" class="form-control" placeholder="{{ res.datafile }}" @change="filechange" style=“widht:90px”>
-            <button type="button" class="btn btn-info btn-xs" @click="queryorder">{{res.queryorder}}</button>
+            <input type="file" class="form-control" placeholder="{{ res.datafile }}"  style=“widht:90px”>
+            <button type="button" class="btn btn-info btn-xs" >{{res.queryorder}}</button>
           </div>
         </div>
       </div>
@@ -58,13 +58,17 @@
       </tr>
       <template v-for="(rs_i,rs_r) in rows_show" track-by="$index">
         <tr id="row_{{rs_r.rowobject.attr.index}}">
-          <td>{{rs_r.rowobject.attr.index}}</td>
-          <td><input type="checkbox" v-model="rs_r.rowobject.attr.select" :disabled="!rs_r.rowobject.attr.canselect"}} />
-          {{rs_r.rowobject.attr.select}}
+          <td>{{rs_r.rowobject.attr.index}}
+            <input type="checkbox" :value="rs_r.rowobject.attr.index" v-model="rs_r.rowobject.attr.editing" @click="changeediting" :disabled="!rs_r.rowobject.attr.canselect"}} />
+            {{rs_r.rowobject.attr.editing}}
+          </td>
+          <td>
+            <input type="checkbox" :value="rs_r.rowobject.attr.index" v-model="selectlist" :disabled="!rs_r.rowobject.attr.canselect"}} />
+            {{selectlist}}
           </td>
           <td v-for="(rin,rv) in rs_r.rowobject.value" track-by="$index">{{rin}}:{{rv}}</td>
         </tr>
-        <tr id="row_{{rs_r.rowobject.attr.index}}"  v-show="rs_r.rowobject.attr.select">
+        <tr id="row_{{rs_r.rowobject.attr.index}}"  v-show="rs_r.rowobject.attr.editing">
           <td :colspan="rs_r.rowobject.value.length+10">
           <table class="table table-condensed table-striped table-bordered table-hover">
             <tr v-for="(rein,rev) in rs_r.edit" track-by="$index">

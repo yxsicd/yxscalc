@@ -10,7 +10,7 @@ var d_table = {
   ]
 }
 
-for (var i = 0; i < 200; i++) {
+for (var i = 0; i < 1000; i++) {
 
   var value = ["name" + i, "ip" + i, "ip" + i, i];
   var row = {};
@@ -19,6 +19,7 @@ for (var i = 0; i < 200; i++) {
   wp[1] = true;
   row.attr = {
     select: false,
+    editing: false,
     canselect: i % 3 == 0,
     index: i,
     "writeable": wp
@@ -46,7 +47,9 @@ var xdata = {
   res: res,
   keyword: "",
   datafile: "",
-  allselect: false
+  allselect: false,
+  lastediting: null,
+  selectlist:[]
 };
 
 var m_table = new Vue({
@@ -59,40 +62,9 @@ var m_table = new Vue({
     after: function (event) {
       this.page++
     },
-    queryorder: function (event) {
-
-      if (!this.files) {
-        return;
-      }
-
-      if (this.files.length > 0) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          content = e.target.result;
-          var lines = content.split("\r\n");
-
-          var olist = lines.map(function (d) {
-            var ds = d.split("\t")
-            var id = parseInt(ds[0]);
-            return id;
-          }).filter(function (d) { return d; });
-          // console.log(olist);
-          this.orderlist = olist;
-          console.log("queryorder: ", this.orderlist);
-        }
-        reader.readAsText(this.files[0], "gb2312");
-        // reader.readAsArrayBuffer(files[0]);
-      }
-    },
-    filechange: function (event) {
-      // console.log(event);
-      this.files = event.target.files;
-    },
     changeselect: function (event) {
       var that = this;
-
       var needselect = !that.allselect;
-
       if (needselect) {
         for (var i = 0; i < that.rows_show.length; i++) {
           var ret = that.rows_show[i]["rowobject"]["attr"]["canselect"] && needselect;
@@ -111,7 +83,14 @@ var m_table = new Vue({
           that.rows.$set(index, oldvalue);
         }
       }
-
+    },
+    changeediting: function (event) { 
+      var that = this;
+      var needselect = !that.allselect;
+      if (that.lastediting)
+      { 
+        that.lastediting.editing = false;
+      }  
     }
   },
   computed: {
