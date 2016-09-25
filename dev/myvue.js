@@ -48,7 +48,7 @@ var xdata = {
   keyword: "",
   datafile: "",
   allselect: false,
-  lastediting: null,
+  editinglist: [],
   selectlist:[]
 };
 
@@ -66,31 +66,20 @@ var m_table = new Vue({
       var that = this;
       var needselect = !that.allselect;
       if (needselect) {
+        var retarr = [];
         for (var i = 0; i < that.rows_show.length; i++) {
           var ret = that.rows_show[i]["rowobject"]["attr"]["canselect"] && needselect;
           var index = that.rows_show[i]["rowobject"]["attr"]["index"];
-          var oldvalue = that.rows[index];
-          oldvalue.attr.select = ret;
-          that.rows.$set(index, oldvalue);
+          if (ret) { 
+            retarr.push(index);
+          }
         }
+        that.selectlist = retarr;
       }
       else {
-        for (var i = 0; i < that.rows_show.length; i++) {
-          var ret = needselect;
-          var index = that.rows_show[i]["rowobject"]["attr"]["index"];
-          var oldvalue = that.rows[index];
-          oldvalue.attr.select = ret;
-          that.rows.$set(index, oldvalue);
-        }
+        var retarr = [];
+        that.selectlist = retarr;
       }
-    },
-    changeediting: function (event) { 
-      var that = this;
-      var needselect = !that.allselect;
-      if (that.lastediting)
-      { 
-        that.lastediting.editing = false;
-      }  
     }
   },
   computed: {
