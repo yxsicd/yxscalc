@@ -162,7 +162,7 @@ var ExampleApplication = React.createClass({
             for (var j = 0; j < row.length; j++) {
                 var etd = [];
                 etd.push(
-                    re("td", { "key": j }, re("lable", { key: "l_rc", htmlFor: "ip" }, "count")),
+                    re("td", { "key": j }, re("lable", { key: "l_rc", htmlFor: "ip" }, keys[j])),
                     re("td", { "key": j + "1" },
                         re("input", { key: j + "1", id: j + "1", value: row[j], onChange: that.hl_rowedit })
                     )
