@@ -14,7 +14,8 @@ var ExampleApplication = React.createClass({
             page: 1,
             page_size: 5,
             keyword: "",
-            rescount: 100
+            rescount: 100,
+            selectlist: []
         };
     },
     hlPageSize: function (event) {
@@ -39,7 +40,41 @@ var ExampleApplication = React.createClass({
 
     },
     hl_allselect: function (event) {
+        var that = this;
+        var ret = [];
+        if (event.target.checked) {
+            for (var i = 0; i < that.rows_show.length; i++) {
+                var row = that.rows_show[i];
+                var index = row.index;
+                ret.push(index);
+            }
+        }
 
+        this.setState({
+            allselect: event.target.checked,
+            selectlist: ret
+        });
+    },
+    hl_select: function (event) {
+        var that = this;
+
+        var index = event.target.getAttribute("data-id");
+        index = parseInt(index);
+        var oldI = that.state.selectlist.indexOf(index);
+
+        if (event.target.checked) {
+            if (oldI == -1) {
+                that.state.selectlist.push(index);
+            }
+        }
+        else {
+            if (oldI != -1) {
+                that.state.selectlist.splice(oldI, 1);
+            }
+        }
+        this.setState({
+            selectlist: that.state.selectlist
+        });
     },
     render: function () {
 
@@ -57,7 +92,8 @@ var ExampleApplication = React.createClass({
                 "rowobject": d,
                 "jsonvalue": jsonvaluestring,
                 "edit": JSON.parse(jsonvaluestring),
-                "valid": Array(d.length).fill(false)
+                "valid": Array(d.length).fill(false),
+                "index": i
             };
             return ret;
         });
@@ -81,7 +117,7 @@ var ExampleApplication = React.createClass({
             that.page = 1;
         }
         var rows_show = rows_filter.slice(index, index + page_size);
-
+        that.rows_show = rows_show;
 
         var data = rows_show;
         var heads = [];
@@ -92,7 +128,11 @@ var ExampleApplication = React.createClass({
         var keys = that.state.data.keys;
 
         tharr.push(re("th", { "key": "th_c" },
-            re("input", { key: "th_ci", type: "checkbox", onChange: that.hl_allselect })
+            [re("input", {
+                key: "th_ci", type: "checkbox",
+                checked: that.state.allselect,
+                onChange: that.hl_allselect
+            }), JSON.stringify(that.state.selectlist)]
         ));
 
         for (var i = 0; i < keys.length; i++) {
@@ -103,8 +143,15 @@ var ExampleApplication = React.createClass({
         for (var i = 0; i < rows_show.length; i++) {
             var row = rows_show[i].rowobject;
             var trtharr = [];
+            var needselect = (that.state.selectlist.indexOf(i) != -1);
+
             trtharr.push(re("td", { "key": "td_c" },
-                re("input", { key: "td_ci", type: "checkbox", onChange: that.hl_allselect })
+                re("input", {
+                    key: "td_ci", type: "checkbox",
+                    checked: needselect,
+                    "data-id": rows_show[i].index,
+                    onChange: that.hl_select
+                })
             ));
             for (var j = 0; j < row.length; j++) {
                 trtharr.push(re("td", { "key": "td_" + i + "_" + j }, row[j]))
