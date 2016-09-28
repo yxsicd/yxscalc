@@ -1,11 +1,13 @@
 {
+    "compileOnSave": true,
     "compilerOptions": {
         "module": "amd",
         "target": "es3",
         "noImplicitAny": false,
         "sourceMap": true,
         "outFile": "dist/yxs.js",
-        "allowJs": false
+        "allowJs": false,
+        "jsx": "react"
     },
     "exclude": [
         "node_modules",
