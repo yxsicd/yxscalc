@@ -122,45 +122,40 @@ var ExampleApplication = React.createClass({
         var data = rows_show;
 
         var keys = that.state.data.keys;
-        var heads = [];
-        for (var i = 0; i < keys.length; i++) {
-            heads.push(<th>{that.state.data.keys[i]}</th>);
-        }
+        var heads = keys.map((v, i) => {
+            return <th>{that.state.data.keys[i]}</th>;
+        });
 
         var thtr = (
             <tr>
                 <th> <input type="checkbox" checked={that.state.allselect} onChange={that.hl_allselect} />
-
                 </th>
                 {heads}
             </tr>);
 
-        var trarr = [];
+        var trarr = rows_show.map((rs_v, rs_i) => {
+            var row = rs_v.rowobject;
+            var needselect = (that.state.selectlist.indexOf(rs_i) != -1);
 
-        for (var i = 0; i < rows_show.length; i++) {
-            var row = rows_show[i].rowobject;
-            var needselect = (that.state.selectlist.indexOf(i) != -1);
+            var valuearr = row.map((v, i) => {
+                return <td>{v}</td>;
+            });
 
-            var trtharr = [];
-            trtharr.push(
+            var tr_value = <tr>
                 <td>
-                    <input type="checkbox" checked={needselect} data-id= { rows_show[i].index } onChange={that.hl_select} />
-                </td>);
-
-            for (var j = 0; j < row.length; j++) {
-                trtharr.push(<td>{row[j]}</td>)
-            }
-
-            trarr.push(trtharr);
+                    <input type="checkbox" checked={needselect} data-id={ rows_show[rs_i].index } onChange={that.hl_select} />
+                </td>
+                {valuearr}
+            </tr>
 
             var etr = row.map((v, i) => {
                 return <tr>
-                    <td><lable>{keys[j]}</lable></td>
-                    <td><input value={row[j]} onChange={that.hl_rowedit} /></td>
+                    <td><lable>{keys[i]}</lable></td>
+                    <td><input value={v} onChange={that.hl_rowedit} /></td>
                 </tr>
             });
 
-            trarr.push(
+            var tr_edit =
                 <tr>
                     <td colSpan="100">
                         <table className="table table-condensed table-striped table-bordered table-hover">
@@ -170,10 +165,10 @@ var ExampleApplication = React.createClass({
                         </table>
                     </td>
                 </tr>
-            );
 
-        };
-
+            var ret = [tr_value, tr_edit];
+            return ret;
+        });
 
         var ret_table = <table className="table table-condensed table-striped table-bordered table-hover">
             <tbody>

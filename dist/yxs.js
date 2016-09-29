@@ -107,27 +107,24 @@ var ExampleApplication = React.createClass({
         that.rows_show = rows_show;
         var data = rows_show;
         var keys = that.state.data.keys;
-        var heads = [];
-        for (var i = 0; i < keys.length; i++) {
-            heads.push(React.createElement("th", null, that.state.data.keys[i]));
-        }
+        var heads = keys.map(function (v, i) {
+            return React.createElement("th", null, that.state.data.keys[i]);
+        });
         var thtr = (React.createElement("tr", null, React.createElement("th", null, " ", React.createElement("input", {type: "checkbox", checked: that.state.allselect, onChange: that.hl_allselect})), heads));
-        var trarr = [];
-        for (var i = 0; i < rows_show.length; i++) {
-            var row = rows_show[i].rowobject;
-            var needselect = (that.state.selectlist.indexOf(i) != -1);
-            var trtharr = [];
-            trtharr.push(React.createElement("td", null, React.createElement("input", {type: "checkbox", checked: needselect, "data-id": rows_show[i].index, onChange: that.hl_select})));
-            for (var j = 0; j < row.length; j++) {
-                trtharr.push(React.createElement("td", null, row[j]));
-            }
-            trarr.push(trtharr);
-            var etr = row.map(function (v, i) {
-                return React.createElement("tr", null, React.createElement("td", null, React.createElement("lable", null, keys[j])), React.createElement("td", null, React.createElement("input", {value: row[j], onChange: that.hl_rowedit})));
+        var trarr = rows_show.map(function (rs_v, rs_i) {
+            var row = rs_v.rowobject;
+            var needselect = (that.state.selectlist.indexOf(rs_i) != -1);
+            var valuearr = row.map(function (v, i) {
+                return React.createElement("td", null, v);
             });
-            trarr.push(React.createElement("tr", null, React.createElement("td", {colSpan: "100"}, React.createElement("table", {className: "table table-condensed table-striped table-bordered table-hover"}, React.createElement("tbody", null, etr)))));
-        }
-        ;
+            var tr_value = React.createElement("tr", null, React.createElement("td", null, React.createElement("input", {type: "checkbox", checked: needselect, "data-id": rows_show[rs_i].index, onChange: that.hl_select})), valuearr);
+            var etr = row.map(function (v, i) {
+                return React.createElement("tr", null, React.createElement("td", null, React.createElement("lable", null, keys[i])), React.createElement("td", null, React.createElement("input", {value: v, onChange: that.hl_rowedit})));
+            });
+            var tr_edit = React.createElement("tr", null, React.createElement("td", {colSpan: "100"}, React.createElement("table", {className: "table table-condensed table-striped table-bordered table-hover"}, React.createElement("tbody", null, etr))));
+            var ret = [tr_value, tr_edit];
+            return ret;
+        });
         var ret_table = React.createElement("table", {className: "table table-condensed table-striped table-bordered table-hover"}, React.createElement("tbody", null, thtr, trarr));
         var carr = React.createElement("div", null, React.createElement("lable", {htmlFor: "rescount"}, "rescount"), React.createElement("input", {type: "text", id: "rescount", value: that.state.rescount, onChange: that.hl_rescount}), React.createElement("lable", {htmlFor: "pagesize"}, "pagesize"), React.createElement("input", {type: "text", id: "pagesize", value: that.state.page_size, onChange: that.hlPageSize}), React.createElement("lable", {htmlFor: "page"}, "page"), React.createElement("input", {type: "text", id: "page", value: that.state.page, onChange: that.hlPage}), React.createElement("lable", {htmlFor: "keyword"}, "keyword"), React.createElement("input", {type: "text", id: "keyword", value: that.state.keyword, onChange: that.hlkeyword}), JSON.stringify(that.state.selectlist), ret_table);
         return (carr);
