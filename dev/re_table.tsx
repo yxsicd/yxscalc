@@ -102,7 +102,7 @@ var ExampleApplication = React.createClass({
         var rows_filter = edit_rows.filter(function (d) {
             return reg.test(d.jsonvalue);
         });
-
+                
         var page = parseInt(that.state.page);
         var page_size = parseInt(that.state.page_size);
 
@@ -148,9 +148,9 @@ var ExampleApplication = React.createClass({
                 {valuearr}
             </tr>
 
-            var etr = row.map((v, i) => {
+            var etr = row.map((v, ri) => {
                 return <tr>
-                    <td><lable>{keys[i]}</lable></td>
+                    <td><lable>{keys[ri]}</lable></td>
                     <td><input value={v} onChange={that.hl_rowedit} /></td>
                 </tr>
             });

@@ -1,11 +1,14 @@
 {
     "compileOnSave": true,
+    "files": [
+        "dev/rform.tsx"
+    ],
     "compilerOptions": {
         "module": "amd",
-        "target": "es3",
+        "target": "es5",
         "noImplicitAny": false,
-        "sourceMap": true,
-        "outFile": "dist/yxs.js",
+        "sourceMap": false,
+        "outFile": "dist/rform.js",
         "allowJs": false,
         "jsx": "react"
     },
