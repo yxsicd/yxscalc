@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset='utf-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="chrome=1">
+	<meta name="description" content="Yxscalc : yxs tool website.">
+	<script src="3rd/react.js"></script>
+    <script src="3rd/react-dom.js"></script>
+    <script type="text/javascript" src="dev/stats.js"></script>
+</head>
+
+<body id="routesvg">
+	<b>SQLite</b> is an ACID compliant embedded relational <b>database</b> management system
+	<div id="mysvgdiv"></div>
+
+	<script src="dist/reactsvg.js"></script>
+	<script>
+var stats = new Stats();
+stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
+
+function animate() {
+
+    stats.begin();
+
+    // monitored code goes here
+
+    stats.end();
+
+    requestAnimationFrame( animate );
+
+}
+
+requestAnimationFrame( animate );
+
+
+    </script>
+</body>
+
+<html>

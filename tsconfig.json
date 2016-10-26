@@ -1,14 +1,14 @@
 {
     "compileOnSave": true,
     "files": [
-        "dev/rform.tsx"
+        "dev/reactsvg.tsx"
     ],
     "compilerOptions": {
         "module": "amd",
         "target": "es5",
         "noImplicitAny": false,
         "sourceMap": false,
-        "outFile": "dist/rform.js",
+        "outFile": "dist/reactsvg.js",
         "allowJs": false,
         "jsx": "react"
     },
